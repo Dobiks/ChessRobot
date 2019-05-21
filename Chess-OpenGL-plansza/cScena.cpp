@@ -1,7 +1,3 @@
-//
-// Created by piotr on 27.03.19.
-//
-
 #include "cScena.h"
 #include <iostream>
 #include <chrono>

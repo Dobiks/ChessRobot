@@ -1,7 +1,3 @@
-//
-// Created by piotr on 27.03.19.
-//
-
 #ifndef FREEGLUT_CPROSTOKAT_H
 #define FREEGLUT_CPROSTOKAT_H
 #include <GL/freeglut.h>

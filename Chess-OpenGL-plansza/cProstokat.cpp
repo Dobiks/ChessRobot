@@ -1,7 +1,3 @@
-//
-// Created by piotr on 27.03.19.
-//
-
 #include "cProstokat.h"
 
 cProstokat::cProstokat(double a, double b, double x, double y) :x_(x),y_(y), a_(a), b_(b) {
