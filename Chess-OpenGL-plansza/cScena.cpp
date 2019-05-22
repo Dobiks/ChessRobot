@@ -1,6 +1,5 @@
 #include "cScena.h"
-#include <iostream>
-#include <chrono>
+
 
 bool ziemia = 0;
 

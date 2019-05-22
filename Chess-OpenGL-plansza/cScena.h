@@ -1,7 +1,6 @@
 #ifndef FREEGLUT_CSCENA_H
 #define FREEGLUT_CSCENA_H
 #include "cProstokat.h"
-#include <vector>
 
 void resize_binding(int width, int height);
 void idle_binding();
