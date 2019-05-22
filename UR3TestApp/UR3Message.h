@@ -1,0 +1,485 @@
+#ifndef UR3MESSAGE_H
+#define UR3MESSAGE_H
+
+
+#pragma once
+#include <vector>
+#include <inttypes.h>
+#include <QVector>
+#include <stdlib.h>
+#include <string.h>
+
+#ifdef __unix
+#define _byteswap_uint64(v) htobe64(v)
+#define _byteswap_uint32(v) htobe32(v)
+#define _byteswap_ulong(v) htobe32(v)
+#endif
+
+enum RobotMode {
+        ROBOT_MODE_DISCONNECTED = 0,
+        ROBOT_MODE_CONFIRM_SAFETY = 1,
+        ROBOT_MODE_BOOTING = 2,
+        ROBOT_MODE_POWER_OFF = 3,
+        ROBOT_MODE_POWER_ON = 4,
+        ROBOT_MODE_IDLE = 5,
+        ROBOT_MODE_BACKDRIVE = 6,
+        ROBOT_MODE_RUNNING = 7,
+        ROBOT_MODE_UPDATING_FIRMWARE = 8
+};
+
+enum ControlMode{
+        CONTROL_MODE_POSITION = 0,
+        CONTROL_MODE_TEACH = 1,
+        CONTROL_MODE_FORCE = 2,
+        CONTROL_MODE_TORQUE = 3
+
+};
+
+
+enum JointMode{
+        JOINT_SHUTTING_DOWN_MODE = 236,
+        JOINT_PART_D_CALIBRATION_MODE = 237,
+        JOINT_BACKDRIVE_MODE = 238,
+        JOINT_POWER_OFF_MODE = 239,
+        JOINT_NOT_RESPONDING_MODE = 245,
+        JOINT_MOTOR_INITIALISATION_MODE = 246,
+        JOINT_BOOTING_MODE = 247,
+        JOINT_PART_D_CALIBRATION_ERROR_MODE = 248,
+        JOINT_BOOTLOADER_MODE = 249,
+        JOINT_CALIBRATION_MODE = 250,
+        JOINT_FAULT_MODE = 252,
+        JOINT_RUNNING_MODE = 253,
+        JOINT_IDLE_MODE = 255
+
+};
+
+enum ToolMode{
+        TOOL_BOOTLOADER_MODE = 249,
+        TOOL_RUNNING_MODE = 253,
+        TOOL_IDLE_MODE= 255
+
+};
+
+enum MessageType
+{
+        ROBOT_STATE = 16, ROBOT_MESSAGE = 20, PROGRAM_STATE_MESSAGE = 25
+};
+
+enum PackageTypes
+{
+        ROBOT_MODE_DATA = 0,
+        JOINT_DATA = 1,
+        TOOL_DATA = 2,
+        MASTERBOARD_DATA = 3,
+        CARTESIAN_INFO = 4,
+        KINEMATICS_INFO = 5,
+        CONFIGURATION_DATA = 6,
+        FORCE_MODE_DATA = 7,
+        ADDITIONAL_INFO = 8,
+        CALIBRATION_DATA = 9,
+        SAFETY_DATA = 10
+};
+
+enum SafetyMode{
+        SAFETY_MODE_FAULT = 9,
+        SAFETY_MODE_VIOLATION = 8,
+        SAFETY_MODE_ROBOT_EMERGENCY_STOP = 7,
+        SAFETY_MODE_SYSTEM_EMERGENCY_STOP = 6,
+        SAFETY_MODE_SAFEGUARD_STOP = 5,
+        SAFETY_MODE_RECOVERY = 4,
+        SAFETY_MODE_PROTECTIVE_STOP = 3,
+        SAFETY_MODE_REDUCED = 2,
+        SAFETY_MODE_NORMAL = 1
+
+};
+
+enum RobotMessageType {
+        ROBOT_MESSAGE_TEXT = 0,
+        ROBOT_MESSAGE_PROGRAM_LABEL = 1,
+        PROGRAM_STATE_MESSAGE_VARIABLE_UPDATE = 2,
+        ROBOT_MESSAGE_VERSION = 3,
+        ROBOT_MESSAGE_SAFETY_MODE = 5,
+        ROBOT_MESSAGE_ERROR_CODE = 6,
+        ROBOT_MESSAGE_KEY = 7,
+        ROBOT_MESSAGE_REQUEST_VALUE = 9,
+        ROBOT_MESSAGE_RUNTIME_EXCEPTION = 10
+};
+
+//!  Klasa przechowujaca RobotModeData
+class RobotModeData //value 0
+{
+private:
+    uint64_t timestamp;             /*!< uint64_t czas */
+
+    bool isRobotConnected;
+    bool isRealRobotEnabled;
+    bool isRobotPowerOn;
+    bool isEmergencyStopped;
+    bool isProtectiveStopped;
+    bool isProgramRunning;
+    bool isProgramPaused;
+
+    RobotMode robotMode;
+    ControlMode controlMode;
+
+    double speedFraction;
+    double speedScaling;
+
+public:
+    RobotModeData();
+    ~RobotModeData();
+
+    uint64_t getTimestamp() const;
+    void setTimestamp(const uint64_t &value);
+    bool getIsRobotConnected() const;
+    void setIsRobotConnected(bool value);
+    bool getIsRealRobotEnabled() const;
+    void setIsRealRobotEnabled(bool value);
+    bool getIsRobotPowerOn() const;
+    void setIsRobotPowerOn(bool value);
+    bool getIsEmergencyStopped() const;
+    void setIsEmergencyStopped(bool value);
+    bool getIsProtectiveStopped() const;
+    void setIsProtectiveStopped(bool value);
+    bool getIsProgramRunning() const;
+    void setIsProgramRunning(bool value);
+    bool getIsProgramPaused() const;
+    void setIsProgramPaused(bool value);
+    RobotMode getRobotMode() const;
+    void setRobotMode(const RobotMode &value);
+    ControlMode getControlMode() const;
+    void setControlMode(const ControlMode &value);
+    double getSpeedFraction() const;
+    void setSpeedFraction(double value);
+    double getSpeedScaling() const;
+    void setSpeedScaling(double value);
+};
+
+//!  Klasa przechowujaca dane pojedynczego jointa
+
+class JointData // value 1
+{
+private:
+    double actualJointPosition;
+    double targetJointPosition;
+    double actualJointSpeed;
+    float actualJointCurrent;
+    float actualJointVoltage;
+    float actualMotorTemprature;
+
+    JointMode jointMode;
+
+public:
+    JointData();
+    ~JointData();
+
+    double getActualJointPosition() const;
+    void setActualJointPosition(double value);
+    double getTargetJointPosition() const;
+    void setTargetJointPosition(double value);
+    double getActualJointSpeed() const;
+    void setActualJointSpeed(double value);
+    float getActualJointCurrent() const;
+    void setActualJointCurrent(float value);
+    float getActualJointVoltage() const;
+    void setActualJointVoltage(float value);
+    float getActualMotorTemprature() const;
+    void setActualMotorTemprature(float value);
+    JointMode getJointMode() const;
+    void setJointMode(const JointMode &value);
+};
+
+//!  Klasa przechowujaca dane narzedzia końcowki
+
+class ToolData //value 2
+{
+private:
+    char analogInputRange2;
+    char analogInputRange3;
+
+    double analogInput2;
+    double analogInput3;
+
+    float toolVoltage48V;
+    float toolCurrent;
+    float toolTemperature;
+
+    unsigned char toolOutputVoltage;
+
+    ToolMode toolMode;
+public:
+    ToolData();
+    ~ToolData();
+
+    char getAnalogInputRange2() const;
+    void setAnalogInputRange2(char value);
+    char getAnalogInputRange3() const;
+    void setAnalogInputRange3(char value);
+    double getAnalogInput2() const;
+    void setAnalogInput2(double value);
+    double getAnalogInput3() const;
+    void setAnalogInput3(double value);
+    float getToolVoltage48V() const;
+    void setToolVoltage48V(float value);
+    float getToolCurrent() const;
+    void setToolCurrent(float value);
+    float getToolTemperature() const;
+    void setToolTemperature(float value);
+    unsigned char getToolOutputVoltage() const;
+    void setToolOutputVoltage(unsigned char value);
+    ToolMode getToolMode() const;
+    void setToolMode(const ToolMode &value);
+};
+
+//!  Klasa przechowujaca MasterboardData
+
+class MasterboardData //value 3
+{
+public:
+    MasterboardData();
+    ~MasterboardData();
+
+    int getDigitalInputBits() const;
+    void setDigitalInputBits(int value);
+
+    int getDigitalOutputBits() const;
+    void setDigitalOutputBits(int value);
+
+    char getAnalogInputRange0() const;
+    void setAnalogInputRange0(char value);
+
+    char getAnalogInputRange1() const;
+    void setAnalogInputRange1(char value);
+
+    double getAnalogInput0() const;
+    void setAnalogInput0(double value);
+
+    double getAnalogInput1() const;
+    void setAnalogInput1(double value);
+
+    char getAnalogOutputDomain0() const;
+    void setAnalogOutputDomain0(char value);
+
+    char getAnalogOutputDomain1() const;
+    void setAnalogOutputDomain1(char value);
+
+    double getAnalogOutput0() const;
+    void setAnalogOutput0(double value);
+
+    double getAnalogOutput1() const;
+    void setAnalogOutput1(double value);
+
+    float getMasterBoardTemperature() const;
+    void setMasterBoardTemperature(float value);
+
+    float getRobotVoltage48V() const;
+    void setRobotVoltage48V(float value);
+
+    float getRobotCurrent() const;
+    void setRobotCurrent(float value);
+
+    float getMasterIOCurrent() const;
+    void setMasterIOCurrent(float value);
+
+    SafetyMode getSafetyMode() const;
+    void setSafetyMode(const SafetyMode &value);
+
+    char getEuromap67InterfaceInstalled() const;
+    void setEuromap67InterfaceInstalled(char value);
+
+    int getEuromapInputBits() const;
+    void setEuromapInputBits(int value);
+
+    int getEuromapOutputBits() const;
+    void setEuromapOutputBits(int value);
+
+    float getEuromapVoltage() const;
+    void setEuromapVoltage(float value);
+
+    float getEuromapCurrent() const;
+    void setEuromapCurrent(float value);
+
+    unsigned char getInReducedMode() const;
+    void setInReducedMode(unsigned char value);
+
+private:
+    int digitalInputBits;
+    int digitalOutputBits;
+    char analogInputRange0;
+    char analogInputRange1;
+    double analogInput0;
+    double analogInput1;
+    char analogOutputDomain0;
+    char analogOutputDomain1;
+    double analogOutput0;
+    double analogOutput1;
+    float masterBoardTemperature;
+    float robotVoltage48V;
+    float robotCurrent;
+    float masterIOCurrent;
+    SafetyMode safetyMode;
+    unsigned char InReducedMode;
+    char euromap67InterfaceInstalled;
+    int euromapInputBits;
+    int euromapOutputBits;
+    float euromapVoltage;
+    float euromapCurrent;
+
+
+};
+
+//!  Klasa przechowujaca informacje o polozeniu koncowki
+
+class CartesianInfoData // value 4
+{
+private:
+    double x,y,z;
+    double rx, ry, rz;
+    double tcpOffsetX, tcpOffsetY, tcpOffsetZ;
+    double tcpOffsetRX, tcpOffsetRY, tcpOffsetRZ;
+
+public:
+    CartesianInfoData();
+    ~CartesianInfoData();
+    double getX() const;
+    void setX(double value);
+    double getY() const;
+    void setY(double value);
+    double getZ() const;
+    void setZ(double value);
+    double getRx() const;
+    void setRx(double value);
+    double getRy() const;
+    void setRy(double value);
+    double getRz() const;
+    void setRz(double value);
+    double getTcpOffsetX() const;
+    void setTcpOffsetX(double value);
+    double getTcpOffsetY() const;
+    void setTcpOffsetY(double value);
+    double getTcpOffsetZ() const;
+    void setTcpOffsetZ(double value);
+    double getTcpOffsetRZ() const;
+    void setTcpOffsetRZ(double value);
+    double getTcpOffsetRY() const;
+    void setTcpOffsetRY(double value);
+    double getTcpOffsetRX() const;
+    void setTcpOffsetRX(double value);
+};
+
+//!  Klasa przechowujaca cfg
+
+class ConfigurationData //value 6
+{
+private:
+    double jointMinLimit;
+    double jointMaxLimit;
+    double jointMaxSpeed;
+    double jointMaxAcceleration;
+    double vJointDefault;
+    double aJointDefault;
+    double vToolDefault;
+    double aToolDefault;
+    double eqRadius;
+    double DHa;
+    double DHd;
+    double DHalpha;
+    double DHtheta;
+    int masterboardVersion;
+    int controllerBoxType;
+    int robotType;
+    int robotSubType;
+
+public:
+    ConfigurationData();
+    ~ConfigurationData();
+
+    double getJointMinLimit() const;
+    void setJointMinLimit(double value);
+    double getJointMaxLimit() const;
+    void setJointMaxLimit(double value);
+    double getJointMaxSpeed() const;
+    void setJointMaxSpeed(double value);
+    double getJointMaxAcceleration() const;
+    void setJointMaxAcceleration(double value);
+    double getVJointDefault() const;
+    void setVJointDefault(double value);
+    double getAJointDefault() const;
+    void setAJointDefault(double value);
+    double getVToolDefault() const;
+    void setVToolDefault(double value);
+    double getAToolDefault() const;
+    void setAToolDefault(double value);
+    double getEqRadius() const;
+    void setEqRadius(double value);
+    double getDHa() const;
+    void setDHa(double value);
+    double getDHd() const;
+    void setDHd(double value);
+    double getDHalpha() const;
+    void setDHalpha(double value);
+    double getDHtheta() const;
+    void setDHtheta(double value);
+    int getMasterboardVersion() const;
+    void setMasterboardVersion(int value);
+    int getControllerBoxType() const;
+    void setControllerBoxType(int value);
+    int getRobotType() const;
+    void setRobotType(int value);
+    int getRobotSubType() const;
+    void setRobotSubType(int value);
+};
+
+/*!
+  Klasa przechowywujaca dane ze strumienia robota
+*/
+
+class UR3Message
+{
+public:
+
+    CartesianInfoData cartesianInfoData;        /*!< Polozenie koncowki TCP, x,y,z typu double dla BASE w metrach, RX,RY,RZ typu double - Rotation Vector w radianach */
+    MasterboardData masterboardData;            /*!< Informacje o ukladzie */
+    ConfigurationData configurationData;        /*!< Informacje o konfiguracji robota, jego typie, maksymalnym zasiegu */
+    QVector<JointData> jointsData;              /*!< Wektor 6 elementowy, dla kazdego z jointow, 0 - base, 1 - Shoulder, itd..., przechowuje predkosc,
+                                                    aktualna i docelowa pozycje typu double w radianach, natezenie i napiecie pradu - float, temp silnika w stopniach - float oraz Joint Mode */
+    ToolData toolData;                          /*!< */
+    RobotModeData robotModeData;                /*!< Timestamp, czy robot jest podlaczony, aktualny RobotMode */
+
+public:
+
+    /*!
+      Konstruktor klasy, nadajacy wektorowi jointsData size = 6.
+    */
+    UR3Message();
+    ~UR3Message();
+
+    /*!
+      Getter:
+      \return CartesianInfoData
+    */
+
+    CartesianInfoData getCartesianInfoData() const;
+
+    /*!
+      Setter:
+      \param data wskaznik na tablice z danymi od UR3.
+      \param offset uint aktualne miejsce w data.
+    */
+    void setCartesianInfoData(char *data, unsigned int offset);
+    MasterboardData getMasterboardData() const;
+    void setMasterboardData(char *data, int offset);
+    ConfigurationData getConfigurationData() const;
+    void setConfigurationData(char *data, unsigned int offset);
+    QVector<JointData> getJointsData() const;
+    void setJointsData(char *data, int offset);
+    ToolData getToolData() const;
+    void setToolData(char *data, int offset);
+    RobotModeData getRobotModeData() const;
+    void setRobotModeData(char *data, int offset);
+
+};
+
+
+
+#endif // UR3MESSAGE_H
