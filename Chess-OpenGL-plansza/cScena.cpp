@@ -14,12 +14,13 @@ cScena::cScena()
 	{
 		int n = 1;
 
-		for (float i = -1.75; i <= 1.75; i += .5)
+		for (float y = -1.75; y <= 1.75; y += .5)
 		{
 			pole = a + std::to_string(n);
-			pola[pole][0] = i;
-			pola[pole][1] = x;
+			pola[pole][0] = x;
+			pola[pole][1] = y;
 			n++;
+
 		}
 		a++;
 	}
@@ -62,11 +63,14 @@ void cScena::display() {
 
     glPushMatrix();
     {
+		//Figury:
 
+		//Plansza:
 		for (auto& el : plansza)
 		{
 			el->rysuj(0, 0,.75);
 		}
+
 		tlo->rysuj(1,1,1);
     }
    
