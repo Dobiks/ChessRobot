@@ -3,10 +3,28 @@
 #include <chrono>
 
 bool ziemia = 0;
-
+using std::string;
 cScena::cScena()
 {
 	tlo = new cProstokat(4, 4, 0, 0);
+	string pole;
+	char a = 65;
+
+	for(float x=-1.75;x<=1.75;x+=.5)
+	{
+		int n = 1;
+
+		for (float i = -1.75; i <= 1.75; i += .5)
+		{
+			pole = a + std::to_string(n);
+			pola[pole][0] = i;
+			pola[pole][1] = x;
+			n++;
+		}
+		a++;
+	}
+
+
 	for (float j = 1.75; j > -2.25; j--)
 	{
 		for (float i = -1.25; i <= 1.75; i++)

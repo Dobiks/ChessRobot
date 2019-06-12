@@ -2,6 +2,8 @@
 #define FREEGLUT_CSCENA_H
 #include "cProstokat.h"
 #include <vector>
+#include <map>
+#include <string>
 
 void resize_binding(int width, int height);
 void idle_binding();
@@ -11,6 +13,7 @@ void timer_binding(int i);
 void mouse_motion_binding(int x, int y);
 
 class cScena {
+	std::map<std::string, float[2]>pola;
 	std::vector<cProstokat*>plansza;
 	cProstokat* tlo;
 public:
