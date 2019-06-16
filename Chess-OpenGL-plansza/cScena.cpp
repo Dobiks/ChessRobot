@@ -26,10 +26,17 @@ cScena::cScena()
 	}
 	
 	{
+		//wieze
 		figury.push_back(new cWieza(pola["A1"][0], pola["A1"][1], 0));
 		figury.push_back(new cWieza(pola["A8"][0], pola["A8"][1], 1));
 		figury.push_back(new cWieza(pola["H1"][0], pola["H1"][1], 0));
 		figury.push_back(new cWieza(pola["H8"][0], pola["A8"][1], 1));
+		//skoczki
+		figury.push_back(new cSkoczek(pola["B1"][0], pola["B1"][1], 0));
+		figury.push_back(new cSkoczek(pola["B8"][0], pola["B8"][1], 1));
+		figury.push_back(new cSkoczek(pola["G1"][0], pola["G1"][1], 0));
+		figury.push_back(new cSkoczek(pola["G8"][0], pola["G8"][1], 1));
+
 	}
 		for (float j = 1.75; j > -2.25; j--)
 		{

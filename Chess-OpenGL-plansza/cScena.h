@@ -3,6 +3,7 @@
 #include "cProstokat.h"
 #include "cFigura.h"
 #include "cWieza.h"
+#include "cSkoczek.h"
 #include <vector>
 #include <map>
 #include <string>
