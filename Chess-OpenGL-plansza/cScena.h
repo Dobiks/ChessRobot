@@ -1,6 +1,8 @@
 #ifndef FREEGLUT_CSCENA_H
 #define FREEGLUT_CSCENA_H
 #include "cProstokat.h"
+#include "cFigura.h"
+#include "cWieza.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -13,19 +15,20 @@ void timer_binding(int i);
 void mouse_motion_binding(int x, int y);
 
 class cScena {
+	std::vector<cFigura*>figury;
 	std::map<std::string, float[2]>pola;
 	std::vector<cProstokat*>plansza;
 	cProstokat* tlo;
 public:
-    cScena();
-    ~cScena();
-    void resize(int width, int height);
-    void timer();
-    void display();
-    void init(int argc, char *argv[], const char* window_name);
-    void set_callbacks();
-    void key(unsigned char key, int x, int y);
-    void mouse_motion_control(int x, int y);
+	cScena();
+	~cScena();
+	void resize(int width, int height);
+	void timer();
+	void display();
+	void init(int argc, char *argv[], const char* window_name);
+	void set_callbacks();
+	void key(unsigned char key, int x, int y);
+	void mouse_motion_control(int x, int y);
 
 };
 
