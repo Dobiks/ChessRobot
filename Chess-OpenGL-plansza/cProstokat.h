@@ -1,7 +1,7 @@
 #pragma once
 #ifndef __apple__
 #include <GLUT/GLUT.h>
-#else
+#elif _WIN32
 #include <GL/freeglut.h>
 #endif
 class cProstokat{
