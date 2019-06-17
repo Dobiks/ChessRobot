@@ -1,9 +1,6 @@
 #pragma once
-#ifndef __apple__
-#include <GLUT/glut.h>
-#else
+
 #include <GL/freeglut.h>
-#endif
 #include <string>
 class cFigura
 {
