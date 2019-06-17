@@ -1,10 +1,10 @@
 #pragma once
 #include"cFigura.h"
-class cSkoczek :public cFigura
+class cGoniec :public cFigura
 {
 
 public:
-	cSkoczek(std::string, bool);
+	cGoniec(std::string, bool);
 	void rysuj();
 };
 

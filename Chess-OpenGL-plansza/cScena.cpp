@@ -27,15 +27,21 @@ cScena::cScena()
 	
 	{
 		//wieze
-		figury.push_back(new cWieza(pola["A1"][0], pola["A1"][1], 0));
-		figury.push_back(new cWieza(pola["A8"][0], pola["A8"][1], 1));
-		figury.push_back(new cWieza(pola["H1"][0], pola["H1"][1], 0));
-		figury.push_back(new cWieza(pola["H8"][0], pola["A8"][1], 1));
+		figury.push_back(new cWieza("A1", 0));
+		figury.push_back(new cWieza("A8", 1));
+		figury.push_back(new cWieza("H1", 0));
+		figury.push_back(new cWieza("H8", 1));
 		//skoczki
-		figury.push_back(new cSkoczek(pola["B1"][0], pola["B1"][1], 0));
-		figury.push_back(new cSkoczek(pola["B8"][0], pola["B8"][1], 1));
-		figury.push_back(new cSkoczek(pola["G1"][0], pola["G1"][1], 0));
-		figury.push_back(new cSkoczek(pola["G8"][0], pola["G8"][1], 1));
+		figury.push_back(new cSkoczek("B1", 0));
+		figury.push_back(new cSkoczek("G1", 0));
+		figury.push_back(new cSkoczek("B8", 1));
+		figury.push_back(new cSkoczek("G8", 1));
+		//gonce
+		figury.push_back(new cGoniec("C1", 0));
+		figury.push_back(new cGoniec("C8", 1));		
+		figury.push_back(new cGoniec("F8", 1));
+		figury.push_back(new cGoniec("F1", 0));
+
 
 	}
 		for (float j = 1.75; j > -2.25; j--)
@@ -151,7 +157,8 @@ void cScena::mouse_control(int button, int state, int x, int y){
 void cScena::mouse_motion_control(int x, int y){
     double openglX = ((double)x - window_width/2) / window_width * 7.5;
     double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
-    for(auto& el: figury){
+    for(auto& el: figury)
+	{
 
       
     }

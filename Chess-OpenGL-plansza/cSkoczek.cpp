@@ -2,7 +2,7 @@
 
 
 
-cSkoczek::cSkoczek(float x, float y, bool kolor) :cFigura(x, y, kolor)
+cSkoczek::cSkoczek(std::string field, bool kolor) :cFigura(field, kolor)
 {
 }
 

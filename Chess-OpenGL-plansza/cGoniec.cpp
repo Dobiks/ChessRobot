@@ -1,13 +1,13 @@
-#include "cWieza.h"
+#include "cGoniec.h"
 
 
 
-cWieza::cWieza(std::string field,bool kolor) :cFigura(field, kolor)
+cGoniec::cGoniec(std::string field, bool kolor) :cFigura(field, kolor)
 {
 }
 
 
-void cWieza::rysuj() {
+void cGoniec::rysuj() {
 	glPushMatrix();
 
 	glTranslated(x_, y_, 0.0);
@@ -22,10 +22,10 @@ void cWieza::rysuj() {
 
 	glBegin(GL_POLYGON);
 	{
-		glVertex3d(.125,.25,0);
-		glVertex3d(-.125,.25,0);
-		glVertex3d(-.125,-.25,0);
-		glVertex3d(.125,-.25,0);
+		glVertex3d(.25, .125, 0);
+		glVertex3d(-.25, .125, 0);
+		glVertex3d(-.25, -.125, 0);
+		glVertex3d(.25, -.125, 0);
 
 	}
 	glEnd();

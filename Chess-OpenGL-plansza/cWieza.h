@@ -1,10 +1,11 @@
 #pragma once
 #include"cFigura.h"
+
 class cWieza :public cFigura
 {
 
 public:
-	cWieza(float,float,bool);
+	cWieza(std::string,bool);
 	void rysuj();
 };
 

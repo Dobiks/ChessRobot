@@ -4,6 +4,7 @@
 #include "cFigura.h"
 #include "cWieza.h"
 #include "cSkoczek.h"
+#include "cGoniec.h"
 #include <vector>
 #include <map>
 #include <string>
