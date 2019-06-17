@@ -7,12 +7,14 @@
 #include <vector>
 #include <map>
 #include <string>
-
+#define window_width 800
+#define window_heigth 600
 void resize_binding(int width, int height);
 void idle_binding();
 void display_binding();
 void key_binding(unsigned char key, int x, int y);
 void timer_binding(int i);
+void mouse_binding(int button, int state, int x, int y);
 void mouse_motion_binding(int x, int y);
 
 class cScena {
@@ -30,6 +32,8 @@ public:
 	void set_callbacks();
 	void key(unsigned char key, int x, int y);
 	void mouse_motion_control(int x, int y);
+    void mouse_control(int button, int state, int x, int y);
+
 
 };
 

@@ -87,6 +87,7 @@ void cScena::display() {
 		}
 
 		tlo->rysuj(1, 1, 1);
+       
 	}
 
 	glPopMatrix();
@@ -138,9 +139,21 @@ cScena::~cScena()
 {
 
 }
+void cScena::mouse_control(int button, int state, int x, int y){
+    double openglX = ((double)x - window_width/2) / window_width * 7.5;
+    double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
+    
+   
+    
+    
+}
 
-void cScena::mouse_motion_control(int x, int y)
-{
+void cScena::mouse_motion_control(int x, int y){
+    double openglX = ((double)x - window_width/2) / window_width * 7.5;
+    double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
+    for(auto& el: figury){
 
+      
+    }
 }
 
