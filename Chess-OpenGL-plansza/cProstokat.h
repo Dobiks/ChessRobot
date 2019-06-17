@@ -1,6 +1,9 @@
 #pragma once
+#ifndef __apple__
+#include <GLUT/GLUT.h>
+#else
 #include <GL/freeglut.h>
-
+#endif
 class cProstokat{
 double a_,b_,x_,y_;
 

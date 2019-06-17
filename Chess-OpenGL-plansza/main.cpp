@@ -1,3 +1,4 @@
+#include <iostream>
 #include "cScena.h"
 
 cScena scena;
