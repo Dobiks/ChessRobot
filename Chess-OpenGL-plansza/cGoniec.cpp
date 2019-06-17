@@ -1,13 +1,13 @@
-#include "cSkoczek.h"
+#include "cGoniec.h"
 
 
 
-cSkoczek::cSkoczek(float x, float y,std::string pole, bool kolor) :cFigura(x, y, pole, kolor)
+cGoniec::cGoniec(std::string field, bool kolor) :cFigura(field, kolor)
 {
 }
 
 
-void cSkoczek::rysuj() {
+void cGoniec::rysuj() {
 	glPushMatrix();
 
 	glTranslated(x_, y_, 0.0);
@@ -22,10 +22,10 @@ void cSkoczek::rysuj() {
 
 	glBegin(GL_POLYGON);
 	{
-		glVertex3d(.125, .125, 0);
-		glVertex3d(-.125, .125, 0);
-		glVertex3d(-.125, -.125, 0);
-		glVertex3d(.125, -.125, 0);
+		glVertex3d(.25, .125, 0);
+		glVertex3d(-.25, .125, 0);
+		glVertex3d(-.25, -.125, 0);
+		glVertex3d(.25, -.125, 0);
 
 	}
 	glEnd();
