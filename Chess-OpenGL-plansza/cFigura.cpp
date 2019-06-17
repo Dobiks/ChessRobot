@@ -2,7 +2,7 @@
 
 
 
-cFigura::cFigura(std::string field,bool kolor):field_(field),kolor_(kolor)
+cFigura::cFigura(std::string field, bool kolor) :field_(field), kolor_(kolor)
 {
 	{ //przypisywanie x_ i y_ na podstawie stringa podanego w argumencie
 		std::string tmp;
@@ -26,7 +26,7 @@ cFigura::cFigura(std::string field,bool kolor):field_(field),kolor_(kolor)
 	}
 }
 
-void cFigura::przesun(float x,float y)
+void cFigura::przesun(float x, float y)
 {
 	x_ = x;
 	y_ = y;
