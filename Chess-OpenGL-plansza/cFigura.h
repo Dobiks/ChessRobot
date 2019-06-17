@@ -1,8 +1,8 @@
 #pragma once
-#ifdef _APPLE_
-#include <GLUT/GLUT.h>
-#elif defined _WIN32 || defined _WIN64
+#ifdef _WIN32 || defined _WIN64
 #include <GL/freeglut.h>
+#else
+#include <GLUT/GLUT.h>
 #endif
 #include <iostream>
 #include <string>
