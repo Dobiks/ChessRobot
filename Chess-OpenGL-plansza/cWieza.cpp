@@ -2,7 +2,7 @@
 
 
 
-cWieza::cWieza(float x,float y,bool kolor) :cFigura(x, y, kolor)
+cWieza::cWieza(float x,float y,std::string pole,bool kolor) :cFigura(x, y,pole, kolor)
 {
 }
 

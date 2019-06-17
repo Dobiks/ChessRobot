@@ -2,7 +2,7 @@
 
 
 
-cFigura::cFigura(float x,float y,bool kolor):x_(x),y_(y),kolor_(kolor)
+cFigura::cFigura(float x,float y,std::string pole,bool kolor):x_(x),y_(y),pole_(pole),kolor_(kolor)
 {
 
 }

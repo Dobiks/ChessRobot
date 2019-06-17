@@ -1,12 +1,20 @@
 #ifndef FREEGLUT_CSCENA_H
 #define FREEGLUT_CSCENA_H
+
+
 #include "cProstokat.h"
 #include "cFigura.h"
 #include "cWieza.h"
 #include "cSkoczek.h"
+
+
 #include <vector>
 #include <map>
 #include <string>
+#include <iostream>
+#include <chrono>
+
+
 #define window_width 800
 #define window_heigth 600
 void resize_binding(int width, int height);
@@ -19,10 +27,10 @@ void mouse_motion_binding(int x, int y);
 
 class cScena {
 	std::vector<cFigura*>figury;
-	std::map<std::string, float[2]>pola;
 	std::vector<cProstokat*>plansza;
 	cProstokat* tlo;
 public:
+    std::map<std::string, float[2]>pola;
 	cScena();
 	~cScena();
 	void resize(int width, int height);

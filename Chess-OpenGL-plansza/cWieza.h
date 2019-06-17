@@ -4,7 +4,7 @@ class cWieza :public cFigura
 {
 
 public:
-	cWieza(float,float,bool);
+    cWieza(float,float,std::string,bool);
 	void rysuj();
 };
 

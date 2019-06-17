@@ -1,6 +1,5 @@
 #include "cScena.h"
-#include <iostream>
-#include <chrono>
+
 
 
 using std::string;
@@ -27,15 +26,15 @@ cScena::cScena()
 	
 	{
 		//wieze
-		figury.push_back(new cWieza(pola["A1"][0], pola["A1"][1], 0));
-		figury.push_back(new cWieza(pola["A8"][0], pola["A8"][1], 1));
-		figury.push_back(new cWieza(pola["H1"][0], pola["H1"][1], 0));
-		figury.push_back(new cWieza(pola["H8"][0], pola["A8"][1], 1));
-		//skoczki
-		figury.push_back(new cSkoczek(pola["B1"][0], pola["B1"][1], 0));
-		figury.push_back(new cSkoczek(pola["B8"][0], pola["B8"][1], 1));
-		figury.push_back(new cSkoczek(pola["G1"][0], pola["G1"][1], 0));
-		figury.push_back(new cSkoczek(pola["G8"][0], pola["G8"][1], 1));
+		figury.push_back(new cWieza(pola["A1"][0], pola["A1"][1],"A1", 0));
+        figury.push_back(new cWieza(pola["A8"][0], pola["A8"][1],"A8", 1));
+        figury.push_back(new cWieza(pola["H1"][0], pola["H1"][1],"H1", 0));
+        figury.push_back(new cWieza(pola["H8"][0], pola["A8"][1],"H8", 1));
+        //skoczki
+        figury.push_back(new cSkoczek(pola["B1"][0], pola["B1"][1],"B1", 0));
+        figury.push_back(new cSkoczek(pola["B8"][0], pola["B8"][1],"B8", 1));
+        figury.push_back(new cSkoczek(pola["G1"][0], pola["G1"][1],"G1", 0));
+        figury.push_back(new cSkoczek(pola["G8"][0], pola["G8"][1],"G8", 1));
 
 	}
 		for (float j = 1.75; j > -2.25; j--)
@@ -99,6 +98,8 @@ void cScena::set_callbacks() {
 	glutReshapeFunc(resize_binding);
 	glutDisplayFunc(display_binding);
 	//glutIdleFunc(idle_binding);
+    glutMouseFunc(mouse_binding);
+
 	glutTimerFunc(40, timer_binding, 0);
 	glutKeyboardFunc(key_binding);
 	glutPassiveMotionFunc(mouse_motion_binding);
@@ -140,20 +141,32 @@ cScena::~cScena()
 
 }
 void cScena::mouse_control(int button, int state, int x, int y){
-    double openglX = ((double)x - window_width/2) / window_width * 7.5;
+    double openglX = ((double)x - window_width/2) / window_width * 6.68;
     double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
-    
-   
-    
-    
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+       for(auto& el: pola){
+            if(openglX>(el.second[0]-0.25) && openglX<(el.second[0]+0.25) and openglY>(el.second[1]-0.25) && openglY<(el.second[1]+0.25) ){std::string pole=el.first;
+                 for(auto& el: figury){
+                     if (el->pole_==pole)el->aktyw_=true;
+                 }
+            }
+        }
+    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+        for(auto& el1: figury)
+            if(el1->aktyw_)
+            {
+                for(auto& el: pola)
+                    if(openglX>(el.second[0]-0.25) && openglX<(el.second[0]+0.25) and openglY>(el.second[1]-0.25) && openglY<(el.second[1]+0.25) ){
+                        el1->pole_=el.first;
+                        el1->x_=el.second[0];
+                        el1->y_=el.second[1];
+                        el1->aktyw_=0;
+                    }
+            }
 }
 
 void cScena::mouse_motion_control(int x, int y){
-    double openglX = ((double)x - window_width/2) / window_width * 7.5;
+    double openglX = ((double)x - window_width/2) / window_width * 6.68;
     double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
-    for(auto& el: figury){
-
-      
-    }
 }
 

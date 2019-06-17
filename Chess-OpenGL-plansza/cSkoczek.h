@@ -4,7 +4,7 @@ class cSkoczek :public cFigura
 {
 
 public:
-	cSkoczek(float, float, bool);
+    cSkoczek(float, float,std::string, bool);
 	void rysuj();
 };
 
