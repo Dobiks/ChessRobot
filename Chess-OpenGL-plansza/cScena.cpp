@@ -24,7 +24,7 @@ cScena::cScena()
 		}
 		a++;
 	}
-	
+
 	{
 		//wieze
 		figury.push_back(new cWieza("A1", 0));
@@ -38,20 +38,20 @@ cScena::cScena()
 		figury.push_back(new cSkoczek("G8", 1));
 		//gonce
 		figury.push_back(new cGoniec("C1", 0));
-		figury.push_back(new cGoniec("C8", 1));		
+		figury.push_back(new cGoniec("C8", 1));
 		figury.push_back(new cGoniec("F8", 1));
 		figury.push_back(new cGoniec("F1", 0));
 
 
 	}
-		for (float j = 1.75; j > -2.25; j--)
+	for (float j = 1.75; j > -2.25; j--)
+	{
+		for (float i = -1.25; i <= 1.75; i++)
 		{
-			for (float i = -1.25; i <= 1.75; i++)
-			{
-				plansza.push_back(new cProstokat(0.5, 0.5, i, j));
-				plansza.push_back(new cProstokat(0.5, 0.5, i - 0.5, j - 0.5));
-			}
+			plansza.push_back(new cProstokat(0.5, 0.5, i, j));
+			plansza.push_back(new cProstokat(0.5, 0.5, i - 0.5, j - 0.5));
 		}
+	}
 }
 
 void cScena::resize(int width, int height) {
@@ -93,7 +93,7 @@ void cScena::display() {
 		}
 
 		tlo->rysuj(1, 1, 1);
-       
+
 	}
 
 	glPopMatrix();
@@ -108,7 +108,7 @@ void cScena::set_callbacks() {
 	glutTimerFunc(40, timer_binding, 0);
 	glutKeyboardFunc(key_binding);
 	glutPassiveMotionFunc(mouse_motion_binding);
-    glutMouseFunc(mouse_binding);
+	glutMouseFunc(mouse_binding);
 
 
 }
@@ -146,33 +146,35 @@ cScena::~cScena()
 {
 
 }
-void cScena::mouse_control(int button, int state, int x, int y){
-    double openglX = ((double)x - window_width/2) / window_width * 6.68;
-    double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-        for(auto& el: pola){
-            if(openglX>(el.second[0]-0.25) && openglX<(el.second[0]+0.25) and openglY>(el.second[1]-0.25) && openglY<(el.second[1]+0.25) ){std::string pole=el.first;
-                for(auto& el: figury){
-                    if (el->field_==pole)el->aktyw_=true;
-                }
-            }
-        }
-    if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
-        for(auto& el1: figury)
-            if(el1->aktyw_)
-            {
-                for(auto& el: pola)
-                    if(openglX>(el.second[0]-0.25) && openglX<(el.second[0]+0.25) and openglY>(el.second[1]-0.25) && openglY<(el.second[1]+0.25) ){
-                        el1->field_=el.first;
-                        el1->x_=el.second[0];
-                        el1->y_=el.second[1];
-                        el1->aktyw_=0;
-                    }
-            }
+void cScena::mouse_control(int button, int state, int x, int y) {
+	double openglX = ((double)x - window_width / 2) / window_width * 6.68;
+	double openglY = -((double)y - window_heigth / 2) / window_heigth * 5;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		for (auto& el : pola) {
+			if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25))
+			{
+				std::string pole = el.first;
+				for (auto& el : figury)
+				{
+					if (el->field_ == pole)el->aktyw_ = true;
+				}
+			}
+		}
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+		for (auto& el1 : figury)
+			if (el1->aktyw_)
+			{
+				for (auto& el : pola)
+					if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25)) {
+						el1->field_ = el.first;
+						el1->przesun(el.second[0], el.second[1]);
+						el1->aktyw_ = 0;
+					}
+			}
 }
 
-void cScena::mouse_motion_control(int x, int y){
-    double openglX = ((double)x - window_width/2) / window_width * 6.68;
-    double openglY = -((double)y - window_heigth/2) / window_heigth * 5;
+void cScena::mouse_motion_control(int x, int y) {
+	double openglX = ((double)x - window_width / 2) / window_width * 6.68;
+	double openglY = -((double)y - window_heigth / 2) / window_heigth * 5;
 }
 
