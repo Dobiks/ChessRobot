@@ -15,11 +15,14 @@ protected:
     std::string field_;
     bool aktyw_=0;
 public:
-    friend class cScena;
+
 
 	cFigura(std::string, bool);
 	virtual void rysuj() = 0;
 	void przesun(float,float);
-
+	void set_active(bool);
+	void set_field(std::string);
+	bool get_active();
+	std::string get_field();
 };
 

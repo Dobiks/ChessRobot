@@ -156,19 +156,18 @@ void cScena::mouse_control(int button, int state, int x, int y) {
 				std::string pole = el.first;
 				for (auto& el : figury)
 				{
-					if (el->field_ == pole)el->aktyw_ = true;
+					if (el->get_field() == pole)el->set_active(true);
 				}
 			}
 		}
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
 		for (auto& el1 : figury)
-			if (el1->aktyw_)
+			if (el1->get_active())
 			{
 				for (auto& el : pola)
 					if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25)) {
-						el1->field_ = el.first;
-						el1->przesun(el.second[0], el.second[1]);
-						el1->aktyw_ = 0;
+						el1->set_field(el.first);
+						el1->set_active(0);
 					}
 			}
 }
