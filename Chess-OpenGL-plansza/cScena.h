@@ -5,6 +5,9 @@
 #include "cWieza.h"
 #include "cSkoczek.h"
 #include "cGoniec.h"
+#include "cKrol.h"
+#include "cPionek.h"
+#include "cHetman.h"
 #include <vector>
 #include <map>
 #include <string>

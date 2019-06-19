@@ -41,6 +41,22 @@ cScena::cScena()
 		figury.push_back(new cGoniec("C8", 1));
 		figury.push_back(new cGoniec("F8", 1));
 		figury.push_back(new cGoniec("F1", 0));
+		//krole
+		figury.push_back(new cKrol("E1", 0));
+		figury.push_back(new cKrol("E8", 1));
+		//piony
+
+		for (char a = 65;a<=73;a++)
+		{
+			string tmp = a + std::to_string(2);
+			string tmp2 = a + std::to_string(7);
+			figury.push_back(new cPionek(tmp, 0));
+			figury.push_back(new cPionek(tmp2, 1));
+		}
+		//hetmany
+		figury.push_back(new cHetman("D1", 0));
+		figury.push_back(new cHetman("D8", 1));
+		
 
 
 	}
