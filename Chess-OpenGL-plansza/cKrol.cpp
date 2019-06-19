@@ -36,3 +36,7 @@ void cKrol::rysuj() {
 	glPopMatrix();
 }
 
+bool cKrol::czy_mozliwy(float new_x, float new_y)
+{
+	return true;
+}

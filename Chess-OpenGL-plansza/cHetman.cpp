@@ -25,13 +25,12 @@ void cHetman::rysuj() {
 		glVertex3d(0, .125, 0);
 		glVertex3d(.125, -.125, 0);
 		glVertex3d(-.125, -.125, 0);
-
-
-
-
-
 	}
 	glEnd();
 	glPopMatrix();
 }
 
+bool cHetman::czy_mozliwy(float new_x, float new_y)
+{
+	return true;
+}

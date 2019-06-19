@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <cmath>
 class cFigura
 {
 protected:
@@ -19,6 +20,7 @@ public:
 
 	cFigura(std::string, bool);
 	virtual void rysuj() = 0;
+	virtual bool czy_mozliwy(float,float) = 0;
 	void przesun(float,float);
 	void set_active(bool);
 	void set_field(std::string);

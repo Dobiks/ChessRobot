@@ -32,3 +32,7 @@ void cSkoczek::rysuj() {
 	glPopMatrix();
 }
 
+bool cSkoczek::czy_mozliwy(float new_x, float new_y)
+{
+	return true;
+}

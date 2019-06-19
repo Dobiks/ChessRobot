@@ -39,6 +39,7 @@ void cFigura::set_active(bool aktywny)
 
 void cFigura::set_field(std::string pole)
 {
+
 	field_ = pole;
 	std::string tmp;
 	char a = 65;
@@ -49,10 +50,13 @@ void cFigura::set_field(std::string pole)
 		for (float y = -1.75; y <= 1.75; y += .5)
 		{
 			tmp = a + std::to_string(n);
-			if (field_ == tmp)
+			if (field_ == tmp && czy_mozliwy(x, y))
 			{
+
 				x_ = x;
 				y_ = y;
+				set_active(0);
+
 			}
 			n++;
 		}

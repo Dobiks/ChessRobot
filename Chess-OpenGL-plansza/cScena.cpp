@@ -1,6 +1,7 @@
 #include "cScena.h"
 #include <iostream>
 #include <chrono>
+#include <cmath>
 
 
 using std::string;
@@ -25,6 +26,9 @@ cScena::cScena()
 		a++;
 	}
 
+
+
+
 	{
 		//wieze
 		figury.push_back(new cWieza("A1", 0));
@@ -45,7 +49,6 @@ cScena::cScena()
 		figury.push_back(new cKrol("E1", 0));
 		figury.push_back(new cKrol("E8", 1));
 		//piony
-
 		for (char a = 65;a<=73;a++)
 		{
 			string tmp = a + std::to_string(2);
@@ -56,9 +59,6 @@ cScena::cScena()
 		//hetmany
 		figury.push_back(new cHetman("D1", 0));
 		figury.push_back(new cHetman("D8", 1));
-		
-
-
 	}
 	for (float j = 1.75; j > -2.25; j--)
 	{
@@ -183,7 +183,6 @@ void cScena::mouse_control(int button, int state, int x, int y) {
 				for (auto& el : pola)
 					if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25)) {
 						el1->set_field(el.first);
-						el1->set_active(0);
 					}
 			}
 }

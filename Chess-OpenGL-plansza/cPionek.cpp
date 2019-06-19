@@ -32,3 +32,7 @@ void cPionek::rysuj() {
 	glPopMatrix();
 }
 
+bool cPionek::czy_mozliwy(float new_x, float new_y)
+{
+	return true;
+}
