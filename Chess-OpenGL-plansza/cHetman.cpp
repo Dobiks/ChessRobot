@@ -32,5 +32,8 @@ void cHetman::rysuj() {
 
 bool cHetman::czy_mozliwy(float new_x, float new_y)
 {
-	return true;
+	if (abs(new_x - x_) / abs(new_y - y_) == 1||new_x==x_||new_y==y_)
+		return true;
+	else 
+		return false;
 }

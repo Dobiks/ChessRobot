@@ -34,5 +34,16 @@ void cPionek::rysuj() {
 
 bool cPionek::czy_mozliwy(float new_x, float new_y)
 {
-	return true;
+	//mozna jeszcze dodac ograniczenie przesuwania sie o 1 lub 2 pola
+	if (kolor_ == 0 && new_y > y_)
+	{
+		return true;
+	}
+	else if (kolor_ == 1 && new_y < y_)
+	{
+
+		return true;
+	}
+	else
+		return 0;
 }

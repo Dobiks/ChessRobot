@@ -34,5 +34,8 @@ void cWieza::rysuj() {
 
 bool cWieza::czy_mozliwy(float new_x, float new_y)
 {
-	return true;
+	if (new_x == x_ || new_y == y_)
+		return true;
+	else
+		return false;
 }
