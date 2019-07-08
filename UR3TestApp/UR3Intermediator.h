@@ -14,6 +14,13 @@
 
 using namespace std;
 
+
+struct position{
+  double x;
+  double y;
+  double z;
+};
+
 class UR3Intermediator: public QObject
 {
     Q_OBJECT
@@ -60,7 +67,11 @@ public:
     /**
      * @brief Home - ustawia robota do pozycji początkowej
      */
+
     void Home();
+
+    position Save(); //Zapisanie pozycji robota
+   void DrawArea(QVector<position>Save_position);
 
     UR3Intermediator();
     /**

@@ -141,7 +141,7 @@ void UR3Message::setMasterboardData(char *data, int offset)
 
     memcpy(&intTemp,&data[offset], sizeof(intTemp));
 #ifndef __apple__
-     this->masterboardData.setDigitalInputBits(_OSSwapInt64(intTemp));
+     this->masterboardData.setDigitalInputBits(_OSSwapInt32(intTemp));
 #else
     this->masterboardData.setDigitalInputBits(_byteswap_ulong(intTemp));
 #endif
@@ -149,7 +149,7 @@ void UR3Message::setMasterboardData(char *data, int offset)
 
     memcpy(&intTemp,&data[offset], sizeof(intTemp));
 #ifndef __apple__
-    this->masterboardData.setDigitalOutputBits(_OSSwapInt64(intTemp));
+    this->masterboardData.setDigitalOutputBits(_OSSwapInt32(intTemp));
 #else
     this->masterboardData.setDigitalOutputBits(_byteswap_ulong(intTemp));
 #endif

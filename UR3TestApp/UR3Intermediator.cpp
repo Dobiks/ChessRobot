@@ -24,7 +24,7 @@ static double bytesSwap(double v)
     } conv;
     conv.d = v;
 #ifndef __apple__
-    conv.i = OSSwapInt64(conv.i);
+    conv.i = OSSwapInt32(conv.i);
 #else
     conv.i = htole64(conv.i);
 #endif
@@ -119,6 +119,29 @@ void UR3Intermediator::SamuraiCut()
     MoveJ(QVector<double>({.0,-1.5708,.0,-1.5708,.0,.0}),2.0);
     MoveJ(QVector<double>({1.5962,0,.0,-1.5708,.0,.0}),2.0);
 }
+position UR3Intermediator::Save()
+{
+position s;
+       CartesianInfoData CurrentCartesianInfo = this->ActualRobotInfo.getCartesianInfoData();
+
+    s.x=(RoundDouble(CurrentCartesianInfo.getX(),4));
+    s.y=(RoundDouble(CurrentCartesianInfo.getY(),4));
+    s.z=(RoundDouble(CurrentCartesianInfo.getZ(),4));
+//    s.push_back(RoundDouble(CurrentCartesianInfo.getRx(),4));
+//    s.push_back(RoundDouble(CurrentCartesianInfo.getRy(),4));
+//    s.push_back(RoundDouble(CurrentCartesianInfo.getRz(),4));
+    return s;
+}
+void UR3Intermediator::DrawArea(QVector<position>s)
+{
+
+    qDebug()<<"Narożnik : "<<s[0].x << ","<<s[0].y<<","<<s[0].z;
+    qDebug()<<"Narożnik : "<<s[1].x << ","<<s[1].y<<","<<s[1].z;
+    qDebug()<<"Narożnik : "<<s[2].x << ","<<s[2].y<<","<<s[2].z;
+    double length=[0].x-s[1].x;
+
+}
+
 
 void UR3Intermediator::Home()
 {
@@ -154,7 +177,7 @@ void UR3Intermediator::MoveL(QVector<double> TargetPose, double toolAcceleration
 
 }
 
-UR3Intermediator::UR3Intermediator():_connected(false), _running(false),Port(30002),IpAddress("192.168.149.128")
+UR3Intermediator::UR3Intermediator():_connected(false), _running(false),Port(30002),IpAddress("192.168.43.139")
 {
     this->_socket = new QTcpSocket();
     this->_lastJointPos.resize(6);
@@ -202,14 +225,21 @@ void UR3Intermediator::setIpAddress(const QString &value)
 
 void UR3Intermediator::GetRobotData()
 {
-    int size = 0;
+    int32_t size = 0;
     unsigned int offset = 0;
     if(mutex.tryLock())
     {
+
+        //qDebug()<<_DataFlow.data();
         _data = _DataFlow.data();
         memcpy(&size, &_data[offset], sizeof(size));
+       // qDebug()<<"Message received of size: "<<_DataFlow.size() << " - "<<_OSSwapInt32(size);
+        //if(size==0 || size > 4096) {
+         //   _DataFlow.clear();
+         //   return;
+        //}
 #ifndef __apple__
-        size = _OSSwapInt64(size);
+        size = _OSSwapInt32(size);
 #else
         size = _byteswap_ulong(size);
 #endif
@@ -236,7 +266,7 @@ void UR3Intermediator::GetRobotData()
             }
             case ROBOT_STATE:
             {
-                //qDebug()<<"ROBOT_STATE";
+               // qDebug()<<"ROBOT_STATE";
                 GetRobotMessage(_data, offset, size);
                 break;
             }
@@ -253,7 +283,7 @@ void UR3Intermediator::GetRobotData()
         }
         _DataFlow = _DataFlow.mid(size);
         //MoveJ(QVector<double>({-0.5, -1.26, 1.21, -1.12, -1.76, 1.09}));
-        qDebug()<<this->ActualRobotInfo.robotModeData.getIsProgramRunning()<<" joint state:"<<this->ActualRobotInfo.jointsData[0].getJointMode();
+      //  qDebug()<<this->ActualRobotInfo.robotModeData.getIsProgramRunning()<<" joint state:"<<this->ActualRobotInfo.jointsData[0].getJointMode();
                 /*qDebug()<<this->ActualRobotInfo.cartesianInfoData.getY();
                 qDebug()<<this->ActualRobotInfo.cartesianInfoData.getZ();
 
@@ -358,7 +388,7 @@ void UR3Intermediator::GetRobotMessage(char *data, unsigned int &offset, int siz
         int sizeOfPackage;
         memcpy(&sizeOfPackage, &data[offset], sizeof(sizeOfPackage));
 #ifndef __apple__
-        sizeOfPackage = _OSSwapInt64(sizeOfPackage);
+        sizeOfPackage = _OSSwapInt32(sizeOfPackage);
 #else
         sizeOfPackage = _byteswap_ulong(sizeOfPackage);
 #endif
@@ -407,7 +437,7 @@ void UR3Intermediator::GetRobotMessage(char *data, unsigned int &offset, int siz
         case CONFIGURATION_DATA:
             break;
         case FORCE_MODE_DATA:
-            qDebug()<<"force mode data";
+           // qDebug()<<"force mode data";
             break;
         case ADDITIONAL_INFO:
             break;

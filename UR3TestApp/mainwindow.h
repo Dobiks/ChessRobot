@@ -14,6 +14,9 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+    QVector<position>Save_position;
+    position home;
+
 
 public:
     explicit MainWindow(QWidget *parent = 0);
@@ -38,6 +41,8 @@ public slots:
     void OnSpeedJ();
     void OnMoveL();
     void OnSamuraiCut();
+    void OnSave();
+
     void OnActionConnection();
     void Home();
 
@@ -46,6 +51,7 @@ public slots:
     void ConnectedToInfo(char* Ip, bool Achieved);
 
     void showSettings();
+
 
 };
 

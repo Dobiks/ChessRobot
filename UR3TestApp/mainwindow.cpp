@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this->ur3, SIGNAL(newPoseTCP(QVector<double>,char)),this, SLOT(OnNewTCP(QVector<double>,char)));
     connect(this->ur3,SIGNAL(ConnectionAction(char*,bool)),this,SLOT(ConnectedToInfo(char*,bool)));
     connect(this->ui->pushButton_Samurai,SIGNAL(clicked(bool)),this,SLOT(OnSamuraiCut()));
+    connect(this->ui->pushButton_Save,SIGNAL(clicked(bool)),this,SLOT(OnSave()));
+
     connect(this->ui->pushButton_MoveJ,SIGNAL(clicked(bool)),this,SLOT(OnMoveJ()));
     connect(this->ui->pushButton_MoveL,SIGNAL(clicked(bool)),this,SLOT(OnMoveL()));
     connect(this->ui->pushButton_SpeedJ,SIGNAL(pressed()),this,SLOT(OnSpeedJ()));
@@ -70,6 +72,13 @@ void MainWindow::OnSamuraiCut()
         this->ur3->SamuraiCut();
     }
 
+}
+void MainWindow::OnSave()
+{
+   position a=this->ur3->Save();
+   Save_position.push_back(a);
+  if(Save_position.size()==3) this->ur3->DrawArea(Save_position);
+   if(Save_position.size()>3)Save_position.clear();
 }
 
 void MainWindow::OnActionConnection()
@@ -132,3 +141,6 @@ void MainWindow::ConnectedToInfo(char* Ip, bool Achieved)
         this->ui->lineEdit_Connection->setText("Connection to IP " + ip + " failed");
     }
 }
+
+
+
