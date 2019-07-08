@@ -138,9 +138,31 @@ void UR3Intermediator::DrawArea(QVector<position>s)
     qDebug()<<"Narożnik : "<<s[0].x << ","<<s[0].y<<","<<s[0].z;
     qDebug()<<"Narożnik : "<<s[1].x << ","<<s[1].y<<","<<s[1].z;
     qDebug()<<"Narożnik : "<<s[2].x << ","<<s[2].y<<","<<s[2].z;
-    double length=[0].x-s[1].x;
+    double length=s[0].x-s[1].x;
+    char a = 65;
+    double lewa,prawa,przod,tyl,krawedz,poziom;
+    map<std::string, float[3]>pola;
+
+        for (float x = lewa; x <= prawa; x += krawedz)
+        {
+            int n = 1;
+
+            for (float y = tyl; y <= przod; y += krawedz)
+            {
+                string pole;
+
+                pole = a + std::to_string(n);
+                pola[pole][0] = x;
+                pola[pole][1] = y;
+                pola[pole][1] = poziom;
+                n++;
+
+            }
+            a++;
+        }
 
 }
+
 
 
 void UR3Intermediator::Home()
