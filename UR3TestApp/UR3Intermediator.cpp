@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <libkern/OSByteOrder.h>
 #include <string>
+#include <fstream>
+
 char *strdup (const char *s)
 {
     char* d = (char*)malloc(strlen (s) + 1);   // Space for length plus nul
@@ -133,46 +135,6 @@ position s;
 //    s.push_back(RoundDouble(CurrentCartesianInfo.getRz(),4));
     return s;
 }
-void UR3Intermediator::DrawArea(QVector<position>s)
-{
-
-    qDebug()<<"Narożnik : "<<s[0].x << ","<<s[0].y<<","<<s[0].z;
-    qDebug()<<"Narożnik : "<<s[1].x << ","<<s[1].y<<","<<s[1].z;
-    qDebug()<<"Narożnik : "<<s[2].x << ","<<s[2].y<<","<<s[2].z;
-//    s[0].x=-0.10000;
-//    s[0].y=-0.1;
-//    s[1].x=-0.200000;
-//    s[1].y=-0.2;
-   // double lewa,prawa,przod,tyl,poziom;
-    double length=s[0].x-s[1].x;
-    double krawedz=length/8;
-    map<std::string, position>pola;char a = 65;string pole;
-
-    for(int i=0; i<8;i++){
-        int n = 1;
-        if(i==3)home.x=s[0].x+4*krawedz;
-
-        for(int j=0; j<8;j++){
-            pole = a + std::to_string(n);
-            pola[pole].x =s[0].x+j*krawedz+krawedz/2;
-            pola[pole].y =s[0].y+i*krawedz+krawedz/2;
-            pola[pole].z =s[0].z;
-
-            qDebug() << QString::fromStdString(pole)<<" X: "<<  pola[pole].x  <<" Y:"<<   pola[pole].y<<" Z:"<<   pola[pole].z;
-
-            if(j==3)home.y=s[0].y+4*krawedz;
-            n++;
-
-        } a++;
-    }
-
-     qDebug() <<"Home "<<" X: "<< home.x <<" Y:"<<home.y ;
-     QVector<double> q{home.x*1000,home.y*1000,home.z*1000,.1,.1,.1};
-
-    this->MoveToPoint(q,1,1);
-
-}
-
 
 
 void UR3Intermediator::Home()
@@ -372,6 +334,118 @@ void UR3Intermediator::CheckIfStillMoveLRunning()
 
 
 }
+void UR3Intermediator::DrawArea(QVector<position>s)
+{
+
+    qDebug()<<"Narożnik : "<<s[0].x << ","<<s[0].y<<","<<s[0].z;
+    qDebug()<<"Narożnik : "<<s[1].x << ","<<s[1].y<<","<<s[1].z;
+    qDebug()<<"Narożnik : "<<s[2].x << ","<<s[2].y<<","<<s[2].z;
+//    s[0].x=-0.10000;
+//    s[0].y=-0.1;
+//    s[1].x=-0.200000;
+//    s[1].y=-0.2;
+   // double lewa,prawa,przod,tyl,poziom;
+    double length=s[0].x-s[1].x;
+    double krawedz=length/8;
+    map<std::string, position>pola;char a = 65;string pole;
+
+    for(int i=0; i<8;i++){
+        int n = 1;
+        if(i==3)home.x=s[0].x+4*krawedz;
+
+        for(int j=0; j<8;j++){
+            pole = a + std::to_string(n);
+            pola[pole].x =s[0].x+j*krawedz+krawedz/2;
+            pola[pole].y =s[0].y+i*krawedz+krawedz/2;
+            pola[pole].z =1;
+
+            qDebug() << QString::fromStdString(pole)<<" X: "<<  pola[pole].x  <<" Y:"<<   pola[pole].y<<" Z:"<<   pola[pole].z;
+
+            if(j==3)home.y=s[0].y+4*krawedz;
+            n++;
+
+        } a++;
+    }
+
+     qDebug() <<"Home "<<" X: "<< home.x <<" Y:"<<home.y<<" Z:"<<home.z  ;
+     QVector<double> home_v{home.x*1000,home.y*1000,home.z*1000,.1,.1,.1};
+     while (_running==true)
+     {
+          qDebug()<<"Trwa ruch";
+          this->CheckIfStillMovejRunning();
+         std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+     }
+    this->MoveToPoint(home_v,1,1);
+     string pole1,pole2,pole1_last="a",pole2_last="b";
+     while (true)
+         {
+            ifstream plik("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wyjscie.txt");
+                if (plik.is_open())
+                    {
+                    getline(plik,pole1);
+                    getline(plik,pole2);
+                    plik.close();
+                    }
+            if(pole1!=pole1_last && pole2!=pole2_last){        //sprawdzenie czy ruch nie zostal wykonany
+
+
+            QVector<double> q{pola[pole1].x*1000,pola[pole1].y*1000,pola[pole1].z*1000,.1,.1,.1}; //wspolrzedna punktu 1
+
+
+
+                 while (_running==true)
+                 {
+                     qDebug()<<"Trwa ruch1";
+                      this->CheckIfStillMovejRunning();
+                     std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+                 }
+             this->MoveToPoint(q,1,1);
+
+            qDebug() <<"Przesuwam z :"<< QString::fromStdString(pole1)<< " do "<< QString::fromStdString(pole2) ;
+
+            if(pole2=="del"){
+             //usuniecie pionka z planszy
+                while (_running==true)
+                { qDebug()<<"Trwa ruch2";
+                     this->CheckIfStillMovejRunning();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+                }
+                q={s[0].x*1000-100,s[0].y*1000-100,s[0].z*1000,.1,.1,.1};
+                this->MoveToPoint(q,1,1);
+            }else {
+                while (_running==true)
+                {
+                     qDebug()<<"Trwa ruch3";
+                     this->CheckIfStillMovejRunning();
+                    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+                }
+                q={pola[pole2].x*1000,pola[pole2].y*1000,pola[pole2].z*1000,.0,.0,.0};
+                this->MoveToPoint(q,1,1);
+            }
+            while (_running==true)
+            {
+                 qDebug()<<"Trwa ruch4";
+                 this->CheckIfStillMovejRunning();
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+            }
+            ofstream ok_wykonano("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wejscie.txt");
+            if (ok_wykonano.is_open())
+            {
+                ok_wykonano << "ok";
+                ok_wykonano.close();
+            }
+         }
+    }
+     //koniec gry
+}
+
+
+
 
 void UR3Intermediator::CheckJointsPosChanged()
 {
