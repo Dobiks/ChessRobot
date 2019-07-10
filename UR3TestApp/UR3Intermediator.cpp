@@ -433,6 +433,16 @@ void UR3Intermediator::DrawArea(QVector<position>s)
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
             }
+            pole1_last=pole1;
+            pole2_last=pole1;
+            this->MoveToPoint(home_v,1,1);
+            while (_running==true)
+            {
+                 qDebug()<<"Trwa ruch5";
+                 this->CheckIfStillMovejRunning();
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+            }
             ofstream ok_wykonano("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wejscie.txt");
             if (ok_wykonano.is_open())
             {
@@ -440,6 +450,7 @@ void UR3Intermediator::DrawArea(QVector<position>s)
                 ok_wykonano.close();
             }
          }
+
     }
      //koniec gry
 }
