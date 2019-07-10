@@ -15,7 +15,6 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     QVector<position>Save_position;
-    position home;
 
 
 public:

@@ -19,11 +19,16 @@ struct position{
   double x;
   double y;
   double z;
+  double rx;
+  double ry;
+  double rz;
 };
 
 class UR3Intermediator: public QObject
 {
     Q_OBJECT
+    position home;
+
 
 public:
 

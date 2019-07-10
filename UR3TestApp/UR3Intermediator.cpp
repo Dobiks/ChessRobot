@@ -7,7 +7,7 @@
 #include "UR3Message.h"
 #include <stdlib.h>
 #include <libkern/OSByteOrder.h>
-
+#include <string>
 char *strdup (const char *s)
 {
     char* d = (char*)malloc(strlen (s) + 1);   // Space for length plus nul
@@ -40,6 +40,7 @@ static double RoundDouble(double val,int prec)
 void UR3Intermediator::MoveToPoint(QVector<double> q, double JointAcceleration, double JointSpeed)
 {
     //TODO: nie dziala, zla logika
+    if(_running == true) qDebug()<<"rusza sie1";
 
     CartesianInfoData CurrentCartesianInfo = this->ActualRobotInfo.getCartesianInfoData();
     double x = RoundDouble(CurrentCartesianInfo.getX(),4);
@@ -55,7 +56,7 @@ void UR3Intermediator::MoveToPoint(QVector<double> q, double JointAcceleration, 
 
 void UR3Intermediator::MoveJ(QVector<double> JointPosition, double JointAcceleration, double JointSpeed)
 {
-   // if(_running == true) qDebug()<<"rusza sie";
+    if(_running == true) qDebug()<<"rusza sie";
     CheckIfStillMovejRunning();
     if(_connected && _running==false)
     {
@@ -138,23 +139,37 @@ void UR3Intermediator::DrawArea(QVector<position>s)
     qDebug()<<"Narożnik : "<<s[0].x << ","<<s[0].y<<","<<s[0].z;
     qDebug()<<"Narożnik : "<<s[1].x << ","<<s[1].y<<","<<s[1].z;
     qDebug()<<"Narożnik : "<<s[2].x << ","<<s[2].y<<","<<s[2].z;
+//    s[0].x=-0.10000;
+//    s[0].y=-0.1;
+//    s[1].x=-0.200000;
+//    s[1].y=-0.2;
+   // double lewa,prawa,przod,tyl,poziom;
     double length=s[0].x-s[1].x;
-    double lewa,prawa,przod,tyl,poziom;
-    double krawedz=length/8;;
+    double krawedz=length/8;
     map<std::string, position>pola;char a = 65;string pole;
+
     for(int i=0; i<8;i++){
         int n = 1;
+        if(i==3)home.x=s[0].x+4*krawedz;
 
         for(int j=0; j<8;j++){
             pole = a + std::to_string(n);
             pola[pole].x =s[0].x+j*krawedz+krawedz/2;
             pola[pole].y =s[0].y+i*krawedz+krawedz/2;
             pola[pole].z =s[0].z;
+
+            qDebug() << QString::fromStdString(pole)<<" X: "<<  pola[pole].x  <<" Y:"<<   pola[pole].y<<" Z:"<<   pola[pole].z;
+
+            if(j==3)home.y=s[0].y+4*krawedz;
             n++;
 
         } a++;
     }
 
+     qDebug() <<"Home "<<" X: "<< home.x <<" Y:"<<home.y ;
+     QVector<double> q{home.x*1000,home.y*1000,home.z*1000,.1,.1,.1};
+
+    this->MoveToPoint(q,1,1);
 
 }
 
