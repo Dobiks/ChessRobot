@@ -49,7 +49,7 @@ cScena::cScena()
 		figury.push_back(new cKrol("E1", 0));
 		figury.push_back(new cKrol("E8", 1));
 		//piony
-		for (char a = 65;a<=73;a++)
+		for (char a = 65; a <= 73; a++)
 		{
 			string tmp = a + std::to_string(2);
 			string tmp2 = a + std::to_string(7);
@@ -139,7 +139,7 @@ void cScena::init(int argc, char **argv, const char *window_name) {
 	glutCreateWindow(window_name);
 
 	// set white as the clear colour
-	glClearColor(0, 0, 0, 1);
+	glClearColor(0.2, 0.2, 0.2, 1);
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -170,21 +170,54 @@ void cScena::mouse_control(int button, int state, int x, int y) {
 			if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25))
 			{
 				std::string pole = el.first;
-				for (auto& el : figury)
+				for (auto& el1 : figury)
 				{
-					if (el->get_field() == pole)el->set_active(true);
+					if (el1->get_field() == pole)el1->set_active(true);
 				}
 			}
 		}
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		bool flag = 0;
 		for (auto& el1 : figury)
+		{
 			if (el1->get_active())
 			{
 				for (auto& el : pola)
 					if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25)) {
-						el1->set_field(el.first);
+						for (auto& el2 : figury)
+						{
+							if (el2->get_field() == el.first)
+							{
+								if (el2->get_color() != el1->get_color())
+								{
+									el1->set_field(el.first);
+									el2->set_field("del");
+									flag = 1;
+									break;
+								}
+								else
+								{
+									el1->set_active(false);
+									flag = 1;
+									break;
+								}
+							}
+						}
+						if (flag == 1)
+							break;
+						if (el1->get_active())
+						{
+							el1->set_field(el.first);
+							break;
+						}
+
 					}
 			}
+			if (flag == 1)
+				break;
+		}
+	}
 }
 
 void cScena::mouse_motion_control(int x, int y) {

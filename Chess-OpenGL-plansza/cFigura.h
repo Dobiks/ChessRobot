@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <cmath>
+#include <fstream>
 class cFigura
 {
 protected:
@@ -24,7 +25,9 @@ public:
 	void przesun(float,float);
 	void set_active(bool);
 	void set_field(std::string);
+	//void usun();
 	bool get_active();
+	bool get_color();
 	std::string get_field();
 };
 
