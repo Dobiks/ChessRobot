@@ -3,7 +3,7 @@
 
 #include "UR3Intermediator.h"
 #include "connectdialog.h"
-
+#include "chessrobot.h"
 #include <QMainWindow>
 #include "settings.h"
 
@@ -29,7 +29,7 @@ private:
     Ui::MainWindow *ui;
     UR3Intermediator* ur3;
     ConnectDialog* connectDialog;
-
+    ChessRobot* board;
     Settings *settings;
 
 public slots:

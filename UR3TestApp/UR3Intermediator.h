@@ -13,8 +13,6 @@
 #include <stdlib.h>
 
 using namespace std;
-
-
 struct position{
   double x;
   double y;
@@ -24,12 +22,13 @@ struct position{
   double rz;
 };
 
+
+
 class UR3Intermediator: public QObject
 {
     Q_OBJECT
-    position home;
 
-
+  friend class  ChessRobot;
 public:
 
 
@@ -75,8 +74,8 @@ public:
 
     void Home();
 
-    position Save(); //Zapisanie pozycji robota
-   void DrawArea(QVector<position>Save_position);
+//    position Save(); //Zapisanie pozycji robota
+//   void DrawArea(QVector<position>Save_position);
 
     UR3Intermediator();
     /**

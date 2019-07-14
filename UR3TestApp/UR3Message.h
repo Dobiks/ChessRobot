@@ -440,6 +440,7 @@ public:
 
 class UR3Message
 {
+
 public:
 
     CartesianInfoData cartesianInfoData;        /*!< Polozenie koncowki TCP, x,y,z typu double dla BASE w metrach, RX,RY,RZ typu double - Rotation Vector w radianach */

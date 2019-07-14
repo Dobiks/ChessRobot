@@ -13,6 +13,7 @@ TEMPLATE = app
 include (../settings/settings.pri)
 
 SOURCES += main.cpp\
+    chessrobot.cpp \
         mainwindow.cpp \
     UR3MessageOut.cpp \
     UR3Intermediator.cpp \
@@ -23,6 +24,7 @@ HEADERS  += mainwindow.h \
     UR3MessageOut.h \
     UR3Intermediator.h \
     UR3Message.h \
+    chessrobot.h \
     connectdialog.h
 
 FORMS    += mainwindow.ui \
