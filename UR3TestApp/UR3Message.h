@@ -440,6 +440,8 @@ public:
 
 class UR3Message
 {
+    //friend class  ChessRobot;
+
 
 public:
 

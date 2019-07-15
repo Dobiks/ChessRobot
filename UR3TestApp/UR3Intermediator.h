@@ -17,9 +17,7 @@ struct position{
   double x;
   double y;
   double z;
-  double rx;
-  double ry;
-  double rz;
+
 };
 
 
@@ -30,6 +28,7 @@ class UR3Intermediator: public QObject
 
   friend class  ChessRobot;
 public:
+  UR3Message ActualRobotInfo;
 
 
     void MoveToPoint(QVector<double> q,double JointAcceleration= 1.0, double JointSpeed = 0.1);
@@ -118,7 +117,6 @@ private:
     Q_PROPERTY(QString IpAddress READ getIpAddress WRITE setIpAddress USER true)
     QString IpAddress;
 
-    UR3Message ActualRobotInfo;
     char * _data;
     QByteArray _DataFlow;
     QTcpSocket* _socket;

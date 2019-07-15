@@ -6,39 +6,32 @@ static double RoundDouble(double val, int prec)
     return round(val * precision) / precision;
 }
 
-//ChessRobot::ChessRobot()
-//{
-
-//}
-
-
-void ChessRobot::addPoint(position tmp){
-    //s.push_back(tmp);
-
-    //if(s.size()==3) this->DrawArea();
-     //if(s.size()>3)s.clear();
-
-}
-position ChessRobot::Save()
+ChessRobot::ChessRobot()
 {
-    position s;
 
-    CartesianInfoData CurrentCartesianInfo=ActualRobotInfo.getCartesianInfoData();
-    s.x = (RoundDouble(CurrentCartesianInfo.getX(), 4))*1000;
-    s.y = (RoundDouble(CurrentCartesianInfo.getY(), 4))*1000;
-    s.z = (RoundDouble(CurrentCartesianInfo.getZ(), 4))*1000;
 
-//    qDebug()<<s.x;
 
-//        s.push_back(RoundDouble(CurrentCartesianInfo.getRx(),4));
-//        s.push_back(RoundDouble(CurrentCartesianInfo.getRy(),4));
-//        s.push_back(RoundDouble(CurrentCartesianInfo.getRz(),4));
-   return s;
+void ChessRobot::addPoint(position tmp,UR3Intermediator *ur3){
+ s.push_back(tmp);
+   //if(s.size()==3)
+   //    this->DrawArea(ur3);
+//     if(s.size()>3)s.clear();
+
+}
+position ChessRobot::Save(UR3Intermediator *ur3)
+{
+    position tmp_point;
+    CartesianInfoData CurrentCartesianInfo = ur3->ActualRobotInfo.cartesianInfoData;
+    tmp_point.x = (RoundDouble(CurrentCartesianInfo.getX(), 4))*1000;
+    tmp_point.y = (RoundDouble(CurrentCartesianInfo.getY(), 4))*1000;
+    tmp_point.z = (RoundDouble(CurrentCartesianInfo.getZ(), 4))*1000;
+    qDebug()<<"X: "<<tmp_point.x<<" Y: "<<tmp_point.y<<" Z: "<<tmp_point.z;
+   return tmp_point;
 }
 
 
 
-void ChessRobot::DrawArea()
+void ChessRobot::DrawArea(UR3Intermediator *ur3)
 {
 
 //    qDebug() << "Narożnik : " << s[0].x << "," << s[0].y << "," << s[0].z;
@@ -51,7 +44,6 @@ void ChessRobot::DrawArea()
 //    // double lewa,prawa,przod,tyl,poziom;
 //    double length = s[0].x - s[1].x;
 //    double krawedz = abs(length / 8);
-//    map<std::string, position> pola;
 //    char a = 65;
 //    string pole;
 

@@ -14,7 +14,6 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    QVector<position>Save_position;
 
 
 public:
@@ -25,9 +24,9 @@ signals:
     void moduleChanged(QObject *object);
 
 private:
+    UR3Intermediator* ur3;
 
     Ui::MainWindow *ui;
-    UR3Intermediator* ur3;
     ConnectDialog* connectDialog;
     ChessRobot* board;
     Settings *settings;
@@ -40,7 +39,7 @@ public slots:
     void OnSpeedJ();
     void OnMoveL();
     void OnSamuraiCut();
-    void OnSave();
+    void OnSave( );
 
     void OnActionConnection();
     void Home();

@@ -9,16 +9,17 @@
 #include <QVector>
 
 
-class ChessRobot: UR3Intermediator
-{
+class ChessRobot{
 
 public:
-
-    position home;
     QVector<position> s; //wektor z punktami
-    position Save(); //Zapisanie pozycji robota
-    void DrawArea();
-    void addPoint(position a);
+    map<std::string, position> pola;
+    position home;
+
+    position Save(UR3Intermediator *ur3); //Zapisanie pozycji robota
+    void DrawArea(UR3Intermediator *ur3);
+    void addPoint(position a,UR3Intermediator *ur3);
+     ChessRobot();
  private:
 
     //Fields

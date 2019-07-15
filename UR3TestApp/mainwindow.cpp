@@ -72,8 +72,8 @@ void MainWindow::OnSamuraiCut()
 }
 void MainWindow::OnSave()
 {
-    position a=this->board->Save();
-    this->board->addPoint(a);
+    position a=this->board->Save(this->ur3);
+    this->board->addPoint(a, this->ur3);
 }
 
 void MainWindow::OnActionConnection()
