@@ -8,14 +8,16 @@ static double RoundDouble(double val, int prec)
 
 ChessRobot::ChessRobot()
 {
+}
+void ChessRobot::game(UR3Intermediator *ur3){
 
+}
+bool ChessRobot::addPoint(position tmp){
 
-
-void ChessRobot::addPoint(position tmp,UR3Intermediator *ur3){
- s.push_back(tmp);
-   //if(s.size()==3)
-   //    this->DrawArea(ur3);
-//     if(s.size()>3)s.clear();
+    s.push_back(tmp);
+   if(s.size()==3)return true;
+     if(s.size()>3)s.clear();
+     return false;
 
 }
 position ChessRobot::Save(UR3Intermediator *ur3)
@@ -26,50 +28,70 @@ position ChessRobot::Save(UR3Intermediator *ur3)
     tmp_point.y = (RoundDouble(CurrentCartesianInfo.getY(), 4))*1000;
     tmp_point.z = (RoundDouble(CurrentCartesianInfo.getZ(), 4))*1000;
     qDebug()<<"X: "<<tmp_point.x<<" Y: "<<tmp_point.y<<" Z: "<<tmp_point.z;
-   return tmp_point;
+    return tmp_point;
+}
+
+
+void ChessRobot::DrawArea()
+{
+    qDebug()<<"Rysuje plansze";
+    qDebug() << "Narożnik : " << s[0].x << "," << s[0].y << "," << s[0].z;
+    qDebug() << "Narożnik : " << s[1].x << "," << s[1].y << "," << s[1].z;
+    qDebug() << "Narożnik : " << s[2].x << "," << s[2].y << "," << s[2].z;
+        s[0].x=-200;
+        s[0].y=-150;
+        s[1].x=-300;
+        s[1].y=-150;
+    // double lewa,prawa,przod,tyl,poziom;
+    double length = s[0].x - s[1].x;
+    double krawedz = abs(length / 8);
+    char a = 65;
+    string pole;
+    home = new position;
+    for (int i = 0; i < 8; i++)
+    {
+        int n = 1;
+        if (i == 3)
+            home->x = s[0].x + 4 * krawedz;
+
+        for (int j = 0; j < 8; j++)
+        {
+            pole = a + std::to_string(n);
+            pola[pole].x = s[0].x + j * krawedz + krawedz / 2;
+            pola[pole].y = s[0].y + i * krawedz + krawedz / 2;
+            pola[pole].z = 0;
+
+            qDebug() << QString::fromStdString(pole) << " X: " << pola[pole].x
+                     << " Y:" << pola[pole].y << " Z:" << pola[pole].z;
+
+            if (j == 3)
+                home->y = s[0].y + 4 * krawedz;
+            n++;
+        }
+        home->z = 10;
+        a++;
+    }
 }
 
 
 
-void ChessRobot::DrawArea(UR3Intermediator *ur3)
-{
+//    string pole1, pole2;
+//    ifstream plik("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wyjscie.txt");
+//           if (plik.is_open())
+//           {
+//               getline(plik, pole1);
+//               getline(plik, pole2);
+//               plik.close();
+//           }
+//           if (pole1 != pole1_last && pole2 != pole2_last and pole1!="" and pole2!="")
+//           {
+//            pole1_last = pole1;
+//            pole2_last = pole2;
+//            return true;
+//           }
+//           else return false;
 
-//    qDebug() << "Narożnik : " << s[0].x << "," << s[0].y << "," << s[0].z;
-//    qDebug() << "Narożnik : " << s[1].x << "," << s[1].y << "," << s[1].z;
-//    qDebug() << "Narożnik : " << s[2].x << "," << s[2].y << "," << s[2].z;
-//        s[0].x=-200;
-//        s[0].y=-150;
-//        s[1].x=-300;
-//        s[1].y=-150;
-//    // double lewa,prawa,przod,tyl,poziom;
-//    double length = s[0].x - s[1].x;
-//    double krawedz = abs(length / 8);
-//    char a = 65;
-//    string pole;
 
-//    for (int i = 0; i < 8; i++)
-//    {
-//        int n = 1;
-//        if (i == 3)
-//            home.x = s[0].x + 4 * krawedz;
-
-//        for (int j = 0; j < 8; j++)
-//        {
-//            pole = a + std::to_string(n);
-//            pola[pole].x = s[0].x + j * krawedz + krawedz / 2;
-//            pola[pole].y = s[0].y + i * krawedz + krawedz / 2;
-//            pola[pole].z = 0;
-
-//            qDebug() << QString::fromStdString(pole) << " X: " << pola[pole].x
-//                     << " Y:" << pola[pole].y << " Z:" << pola[pole].z;
-
-//            if (j == 3)
-//                home.y = s[0].y + 4 * krawedz;
-//            n++;
-//        }
-//        home.z = 10;
-//        a++;
-//    }
 //    int h = 0;
 
 //    qDebug() << "Home "
@@ -85,7 +107,6 @@ void ChessRobot::DrawArea(UR3Intermediator *ur3)
 //            break;
 //    }
 //    this->MoveToPoint(home_v, 1, 1);
-//    string pole1, pole2, pole1_last = "a", pole2_last = "b";
 
 
 //    while (true)
@@ -198,7 +219,3 @@ void ChessRobot::DrawArea(UR3Intermediator *ur3)
 
 //    }
 //}
-//// koniec gry
-}
-
-

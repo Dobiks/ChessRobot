@@ -29,7 +29,7 @@ class UR3Intermediator: public QObject
   friend class  ChessRobot;
 public:
   UR3Message ActualRobotInfo;
-
+     bool _running;
 
     void MoveToPoint(QVector<double> q,double JointAcceleration= 1.0, double JointSpeed = 0.1);
 
@@ -105,7 +105,7 @@ private:
 
     //Fields
 
-    bool _running;
+
     QVector<double> _moveJTargetPos;
     QVector<double> _moveLTargetPose;
     QVector<double> _lastJointPos;

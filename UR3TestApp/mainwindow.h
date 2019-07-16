@@ -6,7 +6,7 @@
 #include "chessrobot.h"
 #include <QMainWindow>
 #include "settings.h"
-
+#include <QTimer>
 namespace Ui {
 class MainWindow;
 }
@@ -25,15 +25,15 @@ signals:
 
 private:
     UR3Intermediator* ur3;
-
+    QTimer *timer;
     Ui::MainWindow *ui;
     ConnectDialog* connectDialog;
-    ChessRobot* board;
+    ChessRobot *board;
     Settings *settings;
 
 public slots:
 
-
+    void timer_game();
     void OnConnectedDialogInfo(QString ip, int port);
     void OnMoveJ();
     void OnSpeedJ();

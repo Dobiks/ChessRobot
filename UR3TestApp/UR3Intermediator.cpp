@@ -43,9 +43,6 @@ static double RoundDouble(double val, int prec)
 void UR3Intermediator::MoveToPoint(QVector<double> q, double JointAcceleration, double JointSpeed)
 {
     // TODO: nie dziala, zla logika
-    if (_running == true)
-        qDebug() << "rusza sie1";
-
     CartesianInfoData CurrentCartesianInfo = this->ActualRobotInfo.getCartesianInfoData();
     double x = RoundDouble(CurrentCartesianInfo.getX(), 4);
     double y = RoundDouble(CurrentCartesianInfo.getY(), 4);

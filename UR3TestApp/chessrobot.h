@@ -7,19 +7,20 @@
 #include <thread>
 #include <fstream>
 #include <QVector>
+#include <vector>
 
 
 class ChessRobot{
 
 public:
-    QVector<position> s; //wektor z punktami
+    vector<position> s; //wektor z punktami
     map<std::string, position> pola;
-    position home;
-
+    position *home;
     position Save(UR3Intermediator *ur3); //Zapisanie pozycji robota
-    void DrawArea(UR3Intermediator *ur3);
-    void addPoint(position a,UR3Intermediator *ur3);
+    void DrawArea();
+    bool addPoint(position a);
      ChessRobot();
+    void game(UR3Intermediator *ur3);
  private:
 
     //Fields
