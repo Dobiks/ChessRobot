@@ -5,14 +5,16 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), settings(new Settings("settings.ini", this)),
     ui(new Ui::MainWindow)
 {
-    // dodane do projektu
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(timer_game()));
-    this->board = new ChessRobot();
-    //koniec
+
 
     ui->setupUi(this);
     this->ur3 = new UR3Intermediator("192.168.43.139",30002);
+
+    // dodane do projektu
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(timer_game()));
+    this->board = new ChessRobot(this->ur3);
+    //koniec
     connect(this->ui->actionConnect,SIGNAL(triggered(bool)),this,SLOT(OnActionConnection()));
     //connect(this->ur3, SIGNAL(newJointPos(QVector<double>)),this,SLOT(OnNewJointPos(QVector<double>)));
     connect(this->ur3, SIGNAL(newPoseTCP(QVector<double>,char)),this, SLOT(OnNewTCP(QVector<double>,char)));
@@ -44,22 +46,24 @@ MainWindow::~MainWindow()
 // dodane do projektu
 void MainWindow::timer_game()
 {
+    if(this->board->check_win())timer->stop();
     if(this->board->get_zadania_empty())
     {
-        qDebug()<<"Stan listy "<< this->board->get_zadania_empty();
+        qDebug()<<"Lista pusta ? "<< this->board->get_zadania_empty();
         //lista pusta sprawdz czy sa nowe pozycje w pliku
-        this->board->check_file(this->ur3);
+        this->board->check_file();
     }
     else {
-        if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning())this->board->do_it(ur3);
+        if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning())this->board->do_it();
         //lista nie pusta// wykonanie zadan
     }
+
 
 }
 void MainWindow::OnSave()
 {
     if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning()){
-    position a=this->board->Save(this->ur3);
+    position a=this->board->Save();
     if(this->board->addPoint(a)){
         this->board->DrawArea();
         timer->start(2000);

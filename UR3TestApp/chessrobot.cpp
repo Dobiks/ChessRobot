@@ -5,7 +5,8 @@ static double RoundDouble(double val, int prec)
     auto precision = pow(10, prec);
     return round(val * precision) / precision;
 }
-void ChessRobot::do_it(UR3Intermediator *ur3)
+
+void ChessRobot::do_it()
 {
     if(!zadania.empty()){
         QVector<double> q;
@@ -28,6 +29,11 @@ void ChessRobot::do_it(UR3Intermediator *ur3)
 
 
 }
+
+ChessRobot::ChessRobot(UR3Intermediator *a)
+{
+    ur3 = a;
+}
 bool ChessRobot::addPoint(position tmp){
 
     s.push_back(tmp);
@@ -45,7 +51,7 @@ bool ChessRobot::get_zadania_empty()
 
 }
 
-bool ChessRobot::check_file(UR3Intermediator *ur3)
+bool ChessRobot::check_file()
 {
     string pole1, pole2;
        ifstream plik("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wyjscie.txt");
@@ -55,6 +61,10 @@ bool ChessRobot::check_file(UR3Intermediator *ur3)
                   getline(plik, pole2);
                   plik.close();
               }
+              if(pole1=="win"){
+                  win=true;
+                  return false;
+              }
               if (pole1 != pole1_last && pole2 != pole2_last and pole1!="" and pole2!="")
               {
                pole1_last = pole1;
@@ -63,15 +73,26 @@ bool ChessRobot::check_file(UR3Intermediator *ur3)
                zadania.push_back("home");
                zadania.push_back(pole2);
                zadania.push_back("home");
+               ofstream ok_wykonano("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wejscie.txt");
+                     if (ok_wykonano.is_open())
+                     {
+                         ok_wykonano << "O";
+                         qDebug() << "Przesunieto";
+                         ok_wykonano.close();
+                     }
 
-               if(!ur3->ActualRobotInfo.robotModeData.getIsProgramRunning())this->do_it(ur3);
+               if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning())this->do_it();
                return true;
               }
               else return false;
 
 
 }
-position ChessRobot::Save(UR3Intermediator *ur3)
+bool ChessRobot::check_win()
+{
+    return win;
+}
+position ChessRobot::Save()
 {
     position tmp_point;
     CartesianInfoData CurrentCartesianInfo = ur3->ActualRobotInfo.cartesianInfoData;
