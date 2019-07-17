@@ -1,7 +1,6 @@
 #ifndef UR3INTERMEDIATOR_H
 #define UR3INTERMEDIATOR_H
 
-
 #pragma once
 #include <vector>
 #include "UR3Message.h"
@@ -13,25 +12,20 @@
 #include <stdlib.h>
 
 using namespace std;
-
-
 struct position{
   double x;
   double y;
   double z;
-  double rx;
-  double ry;
-  double rz;
 };
 
 class UR3Intermediator: public QObject
 {
     Q_OBJECT
-    position home;
 
-
+  friend class  ChessRobot;
 public:
-
+  UR3Message ActualRobotInfo;
+     bool _running;
 
     void MoveToPoint(QVector<double> q,double JointAcceleration= 1.0, double JointSpeed = 0.1);
 
@@ -75,8 +69,8 @@ public:
 
     void Home();
 
-    position Save(); //Zapisanie pozycji robota
-   void DrawArea(QVector<position>Save_position);
+//    position Save(); //Zapisanie pozycji robota
+//   void DrawArea(QVector<position>Save_position);
 
     UR3Intermediator();
     /**
@@ -107,7 +101,7 @@ private:
 
     //Fields
 
-    bool _running;
+
     QVector<double> _moveJTargetPos;
     QVector<double> _moveLTargetPose;
     QVector<double> _lastJointPos;
@@ -119,7 +113,6 @@ private:
     Q_PROPERTY(QString IpAddress READ getIpAddress WRITE setIpAddress USER true)
     QString IpAddress;
 
-    UR3Message ActualRobotInfo;
     char * _data;
     QByteArray _DataFlow;
     QTcpSocket* _socket;

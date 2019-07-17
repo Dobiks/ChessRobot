@@ -43,9 +43,6 @@ static double RoundDouble(double val, int prec)
 void UR3Intermediator::MoveToPoint(QVector<double> q, double JointAcceleration, double JointSpeed)
 {
     // TODO: nie dziala, zla logika
-    if (_running == true)
-        qDebug() << "rusza sie1";
-
     CartesianInfoData CurrentCartesianInfo = this->ActualRobotInfo.getCartesianInfoData();
     double x = RoundDouble(CurrentCartesianInfo.getX(), 4);
     double y = RoundDouble(CurrentCartesianInfo.getY(), 4);
@@ -55,7 +52,10 @@ void UR3Intermediator::MoveToPoint(QVector<double> q, double JointAcceleration, 
     double rz = RoundDouble(CurrentCartesianInfo.getRz(), 4);
 
     QVector<double> cord = QVector<double>(
-        { x + (q[0] / 1000.0), y + (q[1] / 1000.0), z + (q[2] / 1000.0), rx, ry, rz });
+                 { (q[0] / 1000.0), (q[1] / 1000.0), (q[2] / 1000.0), rx, ry, rz });
+       // { x + (q[0] / 1000.0), y + (q[1] / 1000.0), z + (q[2] / 1000.0), rx, ry, rz });
+    qDebug() << cord[0]<<" "<<cord[1]<<" "<<cord[2];
+
     MoveL(cord);
 }
 
@@ -112,26 +112,10 @@ void UR3Intermediator::SamuraiCut()
     MoveJ(QVector<double>({ .0, -1.5708, .0, -1.5708, .0, .0 }), 2.0);
     MoveJ(QVector<double>({ 1.5962, 0, .0, -1.5708, .0, .0 }), 2.0);
 }
-position UR3Intermediator::Save()
-{
-    position s;
-    CartesianInfoData CurrentCartesianInfo = this->ActualRobotInfo.getCartesianInfoData();
-
-    s.x = (RoundDouble(CurrentCartesianInfo.getX(), 4))*1000;
-    s.y = (RoundDouble(CurrentCartesianInfo.getY(), 4))*1000;
-    s.z = (RoundDouble(CurrentCartesianInfo.getZ(), 4))*1000;
-    //    s.push_back(RoundDouble(CurrentCartesianInfo.getRx(),4));
-    //    s.push_back(RoundDouble(CurrentCartesianInfo.getRy(),4));
-    //    s.push_back(RoundDouble(CurrentCartesianInfo.getRz(),4));
-    return s;
-}
-
 
 void UR3Intermediator::Home()
 {
-    MoveJ(QVector<double>({ .0, -1.5708, .0, -1.5708, .0, .0 }));
-}
-
+    MoveJ(QVector<double>({ .0, -1.5708, .0, -1.5708, .0, .0 }));}
 
 void UR3Intermediator::MoveL(QVector<double> TargetPose, double toolAcceleration, double toolSpeed,
     double time, double blendRadius)
@@ -281,6 +265,7 @@ void UR3Intermediator::GetRobotData()
         mutex.unlock();
     }
 }
+
 void UR3Intermediator::CheckIfStillMovejRunning()
 {
 
@@ -323,177 +308,6 @@ void UR3Intermediator::CheckIfStillMoveLRunning()
         _running = false;
     }
 }
-void UR3Intermediator::DrawArea(QVector<position> s)
-{
-
-    qDebug() << "Narożnik : " << s[0].x << "," << s[0].y << "," << s[0].z;
-    qDebug() << "Narożnik : " << s[1].x << "," << s[1].y << "," << s[1].z;
-    qDebug() << "Narożnik : " << s[2].x << "," << s[2].y << "," << s[2].z;
-    //    s[0].x=-0.10000;
-    //    s[0].y=-0.1;
-    //    s[1].x=-0.200000;
-    //    s[1].y=-0.2;
-    // double lewa,prawa,przod,tyl,poziom;
-    double length = s[0].x - s[1].x;
-    double krawedz = abs(length / 8);
-    map<std::string, position> pola;
-    char a = 65;
-    string pole;
-
-    for (int i = 0; i < 8; i++)
-    {
-        int n = 1;
-        if (i == 3)
-            home.x = s[0].x + 4 * krawedz;
-
-        for (int j = 0; j < 8; j++)
-        {
-            pole = a + std::to_string(n);
-            pola[pole].x = s[0].x + j * krawedz + krawedz / 2;
-            pola[pole].y = s[0].y + i * krawedz + krawedz / 2;
-            pola[pole].z = 0;
-
-            qDebug() << QString::fromStdString(pole) << " X: " << pola[pole].x
-                     << " Y:" << pola[pole].y << " Z:" << pola[pole].z;
-
-            if (j == 3)
-                home.y = s[0].y + 4 * krawedz;
-            n++;
-        }
-        a++;
-    }
-    int h = 0;
-
-    qDebug() << "Home "
-             << " X: " << home.x << " Y:" << home.y << " Z:" << home.z;
-    QVector<double> home_v{ home.x , home.y , 0, .1, .1, .1 };
-    while (_running == true)
-    {
-        h++;
-        qDebug() << "Trwa ruch";
-        this->CheckIfStillMovejRunning();
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        if (h > 300)
-            break;
-    }
-    this->MoveToPoint(home_v, 1, 1);
-    string pole1, pole2, pole1_last = "a", pole2_last = "b";
-
-
-    while (true)
-    {
-        ifstream plik("/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wyjscie.txt");
-        if (plik.is_open())
-        {
-            getline(plik, pole1);
-            getline(plik, pole2);
-            plik.close();
-        }
-        if (pole1 != pole1_last && pole2 != pole2_last)
-        { // sprawdzenie czy ruch nie zostal wykonany
-
-
-            QVector<double> q{ pola[pole1].x , pola[pole1].y , pola[pole1].z , .1,
-                .1, .1 }; // wspolrzedna punktu 1
-            h = 0;
-            while (_running == true)
-            {
-                h++;
-                qDebug() << "Trwa ruch do home";
-                this->CheckIfStillMovejRunning();
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                if (h > 300)
-                    break;
-            }
-            this->MoveToPoint(q, 1, 1);
-
-
-            // pionek podniesiony teraz idz do home
-            h = 0;
-            while (_running == true)
-            {
-                h++;
-                qDebug() << "Trwa ruch do home";
-                this->CheckIfStillMovejRunning();
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                if (h > 300)
-                    break;
-            }
-            this->MoveToPoint(home_v, 1, 1);
-
-
-            qDebug() << "Przesuwam z :" << QString::fromStdString(pole1) << " do "
-                     << QString::fromStdString(pole2);
-
-
-
-        if (pole2 == "del")
-        {
-            // usuniecie pionka z planszy
-            h = 0;
-            while (_running == true)
-            {
-                qDebug() << "Trwa ruch2";
-                h++;
-                this->CheckIfStillMovejRunning();
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                if (h > 300)
-                    break;
-            }
-            q = { s[0].x   - 100, s[0].y   - 100, s[0].z  , .1, .1, .1 };
-            this->MoveToPoint(q, 1, 1);
-        }
-        else
-        {
-            h = 0;
-            while (_running == true)
-            {
-                h++;
-                qDebug() << "Trwa ruch3";
-                this->CheckIfStillMovejRunning();
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-                if (h > 300)
-                    break;
-            }
-            q = { pola[pole2].x  , pola[pole2].y  , pola[pole2].z  , .0, .0, .0 };
-            this->MoveToPoint(q, 1, 1);
-        }
-        h = 0;
-        while (_running == true)
-        {
-            h++;
-            qDebug() << "Trwa ruch4";
-            this->CheckIfStillMovejRunning();
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            if (h > 300)
-                break;
-        }
-        pole1_last = pole1;
-        pole2_last = pole1;
-        this->MoveToPoint(home_v, 1, 1);
-        h = 0;
-        while (_running == true)
-        {
-            h++;
-            qDebug() << "Trwa ruch5";
-            this->CheckIfStillMovejRunning();
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            if (h > 300)
-                break;
-        }
-        ofstream ok_wykonano(
-            "/Users/jakubczech/Documents/GitHub/ChessRobot/UR3TestApp/wejscie.txt");
-        if (ok_wykonano.is_open())
-        {
-            ok_wykonano << "ok";
-            qDebug() << "Przesunieto";
-            ok_wykonano.close();
-        }
-    }
-}
-// koniec gry
-}
-
 
 void UR3Intermediator::CheckJointsPosChanged()
 {
@@ -656,3 +470,22 @@ void UR3Intermediator::OnSocketNewBytesWritten()
     this->ReadDataFlow();
     GetRobotData();
 }
+//position UR3Intermediator::GetPosition()
+//{
+
+
+//    CartesianInfoData CurrentCartesianInfo = this->ActualRobotInfo.getCartesianInfoData();
+//    double x = RoundDouble(CurrentCartesianInfo.getX(), 4);
+//    double y = RoundDouble(CurrentCartesianInfo.getY(), 4);
+//    double z = RoundDouble(CurrentCartesianInfo.getZ(), 4);
+//    double rx = RoundDouble(CurrentCartesianInfo.getRx(), 4);
+//    double ry = RoundDouble(CurrentCartesianInfo.getRy(), 4);
+//    double rz = RoundDouble(CurrentCartesianInfo.getRz(), 4);
+
+//    QVector<double> cord = QVector<double>(
+//                 { (q[0] / 1000.0), (q[1] / 1000.0), (q[2] / 1000.0), rx, ry, rz });
+//       // { x + (q[0] / 1000.0), y + (q[1] / 1000.0), z + (q[2] / 1000.0), rx, ry, rz });
+//    qDebug() << cord[0]<<" "<<cord[1]<<" "<<cord[2];
+
+//    MoveL(cord);
+//}

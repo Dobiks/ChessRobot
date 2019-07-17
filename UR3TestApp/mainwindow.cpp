@@ -5,21 +5,27 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), settings(new Settings("settings.ini", this)),
     ui(new Ui::MainWindow)
 {
+    // dodane do projektu
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(timer_game()));
+    this->board = new ChessRobot();
+    //koniec
+
     ui->setupUi(this);
-
     this->ur3 = new UR3Intermediator("192.168.43.139",30002);
-
     connect(this->ui->actionConnect,SIGNAL(triggered(bool)),this,SLOT(OnActionConnection()));
     //connect(this->ur3, SIGNAL(newJointPos(QVector<double>)),this,SLOT(OnNewJointPos(QVector<double>)));
     connect(this->ur3, SIGNAL(newPoseTCP(QVector<double>,char)),this, SLOT(OnNewTCP(QVector<double>,char)));
     connect(this->ur3,SIGNAL(ConnectionAction(char*,bool)),this,SLOT(ConnectedToInfo(char*,bool)));
     connect(this->ui->pushButton_Samurai,SIGNAL(clicked(bool)),this,SLOT(OnSamuraiCut()));
-    connect(this->ui->pushButton_Save,SIGNAL(clicked(bool)),this,SLOT(OnSave()));
-
+    connect(this->ui->pushButton_Save,SIGNAL(clicked(bool)),this,SLOT(OnSave())); // dodane do prjektu
     connect(this->ui->pushButton_MoveJ,SIGNAL(clicked(bool)),this,SLOT(OnMoveJ()));
     connect(this->ui->pushButton_MoveL,SIGNAL(clicked(bool)),this,SLOT(OnMoveL()));
     connect(this->ui->pushButton_SpeedJ,SIGNAL(pressed()),this,SLOT(OnSpeedJ()));
     connect(this->ui->pushButton_Home,SIGNAL(clicked(bool)),this,SLOT(Home()));
+
+
+
     ur3->ConnectToRobot();
     connect(this->ui->actionSettings, SIGNAL(triggered(bool)), this, SLOT(showSettings()));
 
@@ -33,6 +39,34 @@ MainWindow::~MainWindow()
     delete settings;
     delete ui;
 }
+
+
+// dodane do projektu
+void MainWindow::timer_game()
+{
+    if(this->board->get_zadania_empty())
+    {
+        qDebug()<<"Stan listy "<< this->board->get_zadania_empty();
+        //lista pusta sprawdz czy sa nowe pozycje w pliku
+        this->board->check_file(this->ur3);
+    }
+    else {
+        if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning())this->board->do_it(ur3);
+        //lista nie pusta// wykonanie zadan
+    }
+
+}
+void MainWindow::OnSave()
+{
+    if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning()){
+    position a=this->board->Save(this->ur3);
+    if(this->board->addPoint(a)){
+        this->board->DrawArea();
+        timer->start(2000);
+    }
+}
+}
+//koniec
 
 void MainWindow::showSettings()
 {
@@ -73,13 +107,7 @@ void MainWindow::OnSamuraiCut()
     }
 
 }
-void MainWindow::OnSave()
-{
-   position a=this->ur3->Save();
-   Save_position.push_back(a);
-  if(Save_position.size()==3) this->ur3->DrawArea(Save_position);
-   if(Save_position.size()>3)Save_position.clear();
-}
+
 
 void MainWindow::OnActionConnection()
 {
