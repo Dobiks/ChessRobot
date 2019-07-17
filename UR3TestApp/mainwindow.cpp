@@ -5,7 +5,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent), settings(new Settings("settings.ini", this)),
     ui(new Ui::MainWindow)
 {
-    // dodane do prjektu
+    // dodane do projektu
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(timer_game()));
     this->board = new ChessRobot();
@@ -41,10 +41,19 @@ MainWindow::~MainWindow()
 }
 
 
-// dodane do prjektu
+// dodane do projektu
 void MainWindow::timer_game()
 {
-    //TODO funckcja sprawdzajaca pliki dodjaca zadania do listy oraz funkcja spraw
+    if(this->board->get_zadania_empty())
+    {
+        qDebug()<<"Stan listy "<< this->board->get_zadania_empty();
+        //lista pusta sprawdz czy sa nowe pozycje w pliku
+        this->board->check_file(this->ur3);
+    }
+    else {
+        if(!this->ur3->ActualRobotInfo.robotModeData.getIsProgramRunning())this->board->do_it(ur3);
+        //lista nie pusta// wykonanie zadan
+    }
 
 }
 void MainWindow::OnSave()
@@ -58,6 +67,7 @@ void MainWindow::OnSave()
 }
 }
 //koniec
+
 void MainWindow::showSettings()
 {
     settings->moduleChanged(ur3);

@@ -25,32 +25,36 @@ signals:
 
 private:
     UR3Intermediator* ur3;
-    QTimer *timer;
+
     Ui::MainWindow *ui;
     ConnectDialog* connectDialog;
+
+    // dodane do projektu
+    QTimer *timer;
     ChessRobot *board;
+    //koniec
     Settings *settings;
 
 public slots:
 
-    void timer_game();
+
     void OnConnectedDialogInfo(QString ip, int port);
     void OnMoveJ();
     void OnSpeedJ();
     void OnMoveL();
     void OnSamuraiCut();
+
+    // dodane do projektu
+    void timer_game();
     void OnSave( );
+    //koniec
 
     void OnActionConnection();
     void Home();
-
     void OnNewJointPos(QVector<double> pose);
     void OnNewTCP(QVector<double> data, char c);
     void ConnectedToInfo(char* Ip, bool Achieved);
-
     void showSettings();
-
-
 };
 
 #endif // MAINWINDOW_H
