@@ -8,58 +8,6 @@ using std::string;
 cScena::cScena()
 {
 	tlo = new cProstokat(4, 4, 0, 0);
-	string pole;
-	char a = 65;
-
-	for (float x = -1.75; x <= 1.75; x += .5)
-	{
-		int n = 1;
-
-		for (float y = -1.75; y <= 1.75; y += .5)
-		{
-			pole = a + std::to_string(n);
-			pola[pole][0] = x;
-			pola[pole][1] = y;
-			n++;
-
-		}
-		a++;
-	}
-
-
-
-
-	{
-		//wieze
-		figury.push_back(new cWieza("A1", 0));
-		figury.push_back(new cWieza("A8", 1));
-		figury.push_back(new cWieza("H1", 0));
-		figury.push_back(new cWieza("H8", 1));
-		//skoczki
-		figury.push_back(new cSkoczek("B1", 0));
-		figury.push_back(new cSkoczek("G1", 0));
-		figury.push_back(new cSkoczek("B8", 1));
-		figury.push_back(new cSkoczek("G8", 1));
-		//gonce
-		figury.push_back(new cGoniec("C1", 0));
-		figury.push_back(new cGoniec("C8", 1));
-		figury.push_back(new cGoniec("F8", 1));
-		figury.push_back(new cGoniec("F1", 0));
-		//krole
-		figury.push_back(new cKrol("E1", 0));
-		figury.push_back(new cKrol("E8", 1));
-		//piony
-		for (char a = 65; a <= 73; a++)
-		{
-			string tmp = a + std::to_string(2);
-			string tmp2 = a + std::to_string(7);
-			figury.push_back(new cPionek(tmp, 0));
-			figury.push_back(new cPionek(tmp2, 1));
-		}
-		//hetmany
-		figury.push_back(new cHetman("D1", 0));
-		figury.push_back(new cHetman("D8", 1));
-	}
 	for (float j = 1.75; j > -2.25; j--)
 	{
 		for (float i = -1.25; i <= 1.75; i++)
@@ -85,9 +33,6 @@ void cScena::resize(int width, int height) {
 }
 
 void cScena::timer() {
-
-
-
 	glutPostRedisplay();
 	glutTimerFunc(40, timer_binding, 0);
 }
@@ -98,7 +43,7 @@ void cScena::display() {
 	glPushMatrix();
 	{
 		//Figury:
-		for (auto& el : figury)
+		for (auto& el : gra.figury)
 		{
 			el->rysuj();
 		}
@@ -120,13 +65,8 @@ void cScena::display() {
 void cScena::set_callbacks() {
 	glutReshapeFunc(resize_binding);
 	glutDisplayFunc(display_binding);
-	//glutIdleFunc(idle_binding);
 	glutTimerFunc(40, timer_binding, 0);
-	glutKeyboardFunc(key_binding);
-	glutPassiveMotionFunc(mouse_motion_binding);
 	glutMouseFunc(mouse_binding);
-
-
 }
 
 void cScena::init(int argc, char **argv, const char *window_name) {
@@ -138,7 +78,6 @@ void cScena::init(int argc, char **argv, const char *window_name) {
 
 	glutCreateWindow(window_name);
 
-	// set white as the clear colour
 	glClearColor(0.2, 0.2, 0.2, 1);
 
 	glEnable(GL_DEPTH_TEST);
@@ -153,75 +92,19 @@ void cScena::init(int argc, char **argv, const char *window_name) {
 	glutMainLoop();
 }
 
-void cScena::key(unsigned char key, int x, int y)
-{
-
+void cScena::mouse_control(int button, int state, int x, int y) {
+	double openglX = ((double)x - window_width / 2) / window_width * 6.68;
+	double openglY = -((double)y - window_heigth / 2) / window_heigth * 5;
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		gra.wybierz_figure(openglX, openglY);
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
+	{
+		gra.przesun_figure(openglX, openglY);
+	}
 }
 
 cScena::~cScena()
 {
 
-}
-void cScena::mouse_control(int button, int state, int x, int y) {
-	double openglX = ((double)x - window_width / 2) / window_width * 6.68;
-	double openglY = -((double)y - window_heigth / 2) / window_heigth * 5;
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-		for (auto& el : pola) {
-			if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25))
-			{
-				std::string pole = el.first;
-				for (auto& el1 : figury)
-				{
-					if (el1->get_field() == pole)el1->set_active(true);
-				}
-			}
-		}
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_UP)
-	{
-		bool flag = 0;
-		for (auto& el1 : figury)
-		{
-			if (el1->get_active())
-			{
-				for (auto& el : pola)
-					if (openglX > (el.second[0] - 0.25) && openglX<(el.second[0] + 0.25) and openglY>(el.second[1] - 0.25) && openglY < (el.second[1] + 0.25)) {
-						for (auto& el2 : figury)
-						{
-							if (el2->get_field() == el.first)
-							{
-								if (el2->get_color() != el1->get_color())
-								{
-									el1->set_field(el.first);
-									el2->set_field("del");
-									flag = 1;
-									break;
-								}
-								else
-								{
-									el1->set_active(false);
-									flag = 1;
-									break;
-								}
-							}
-						}
-						if (flag == 1)
-							break;
-						if (el1->get_active())
-						{
-							el1->set_field(el.first);
-							break;
-						}
-
-					}
-			}
-			if (flag == 1)
-				break;
-		}
-	}
-}
-
-void cScena::mouse_motion_control(int x, int y) {
-	double openglX = ((double)x - window_width / 2) / window_width * 6.68;
-	double openglY = -((double)y - window_heigth / 2) / window_heigth * 5;
 }
 

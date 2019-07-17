@@ -8,6 +8,7 @@
 #include "cKrol.h"
 #include "cPionek.h"
 #include "cHetman.h"
+#include "cGra.h"
 #include <vector>
 #include <map>
 #include <string>
@@ -16,17 +17,16 @@
 void resize_binding(int width, int height);
 void idle_binding();
 void display_binding();
-void key_binding(unsigned char key, int x, int y);
 void timer_binding(int i);
 void mouse_binding(int button, int state, int x, int y);
-void mouse_motion_binding(int x, int y);
 
 class cScena {
-	std::vector<cFigura*>figury;
+	cGra gra;
+	//std::vector<cFigura*>figury;
 	std::vector<cProstokat*>plansza;
 	cProstokat* tlo;
 public:
-    std::map<std::string, float[2]>pola;
+   // std::map<std::string, float[2]>pola;
 	cScena();
 	~cScena();
 	void resize(int width, int height);
@@ -34,8 +34,6 @@ public:
 	void display();
 	void init(int argc, char *argv[], const char* window_name);
 	void set_callbacks();
-	void key(unsigned char key, int x, int y);
-	void mouse_motion_control(int x, int y);
     void mouse_control(int button, int state, int x, int y);
 
 

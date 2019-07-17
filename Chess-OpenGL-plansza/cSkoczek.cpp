@@ -34,5 +34,18 @@ void cSkoczek::rysuj() {
 
 bool cSkoczek::czy_mozliwy(float new_x, float new_y)
 {
-	return true;
+	float warunekx;
+	float waruneky;
+	if (new_x > x_)
+		warunekx = abs(new_x - x_);
+	else
+		warunekx = abs(x_ - new_x);
+	if (new_y > y_)
+		waruneky = abs(new_y - y_);
+	else
+		waruneky = abs(y_ - new_y);
+	if ((warunekx == 1 || waruneky == 1)&&new_x!=x_&&new_y!=y_)
+		return 1;
+	else
+		return 0;
 }

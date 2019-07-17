@@ -15,12 +15,6 @@ void display_binding(){
     scena.display();
 }
 
-void key_binding(unsigned char key,int x, int y){
-    scena.key(key, x, y);
-}
-void mouse_motion_binding(int x, int y){
-    scena.mouse_motion_control(x,y);
-}
 void mouse_binding(int button, int state, int x, int y){
     scena.mouse_control(button,state,x,y);
 }

@@ -60,7 +60,7 @@ bool wyslij(string pole1, string pole2)
 	}
 	ofstream ok_wykonano("wejscie.txt");
 	if (ok_wykonano.is_open())
-		ok_wykonano << "wykonano";
+		ok_wykonano << "0";
 	ok_wykonano.close();
 	
 	return 1;
@@ -102,15 +102,6 @@ void cFigura::set_field(std::string pole)
 		}
 	}
 }
-
-
-
-//void cFigura::usun()
-//{
-//	x_ = 2.5;
-//	y_ = 0;
-//	field_ = "del";
-//}
 
 bool cFigura::get_active()
 {
