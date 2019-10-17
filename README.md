@@ -1,5 +1,3 @@
 # ChessRobot
 
-Program ma łączyć się z API lichess.org, pobierać obecny stan rozgrywki szachowej, wyświetlać ją na ekranie oraz kontrolować robota UR
-i przesuwać figury na planszy za pomocą elektromagnesu.
-Wykonywanie ruchu, również będzie możliwe z poziomu klienta.
+Program umożliwia grę w szachy z poziomu klienta. Zagrane posunięcia wykonywane są przez symulację robota UR3.
